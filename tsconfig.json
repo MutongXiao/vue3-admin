@@ -1,0 +1,37 @@
+{
+	"extends": "@vue/tsconfig/tsconfig.web.json",
+	"compilerOptions": {
+		"target": "esnext",
+		"useDefineForClassFields": true,
+		"composite": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		/* Strict Type-Checking Options */
+		"strict": true /* Enable all strict type-checking options. */,
+		// 解析非相对模块名的基准目录
+		"baseUrl": ".",
+		"jsx": "preserve",
+		"sourceMap": true,
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"lib": ["esnext", "dom"],
+		"paths": {
+			"@": ["src"],
+			"@/*": ["./src/*"]
+		},
+		// 跳过库检查，解决打包失败
+		"skipLibCheck": true,
+		"types": ["node", "element-plus/global"]
+	},
+	"include": [
+		"**/*.d.ts",
+		"src/**/*.ts",
+		"src/**/*.d.ts",
+		"src/**/*.tsx",
+		"src/**/*.vue",
+		"vite.config.*",
+		"vitest.config.*",
+		"cypress.config.*"
+	],
+	"exclude": ["node_modules", "dist", "**/*.js"]
+}
