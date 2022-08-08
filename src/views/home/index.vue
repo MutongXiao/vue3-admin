@@ -1,7 +1,11 @@
 <template>
-	<h1>Home</h1>
+	<div class="home flx-center">
+		<img class="home-bg" src="@/assets/images/welcome.png" alt="welcome" />
+	</div>
 </template>
 
-<script lang="ts" setup></script>
+<script setup lang="ts" name="home"></script>
 
-<style lang="scss" scoped></style>
+<style scoped lang="scss">
+@import "./index.scss";
+</style>

@@ -1,5 +1,5 @@
 {
-	"name": "vue3-shop-admin",
+	"name": "vue3-admin",
 	"version": "0.0.0",
 	"scripts": {
 		"dev": "vite",
@@ -18,13 +18,22 @@
 	},
 	"dependencies": {
 		"@element-plus/icons-vue": "^2.0.6",
+		"@vueuse/core": "^9.1.0",
+		"@wangeditor/editor": "^5.1.14",
+		"@wangeditor/editor-for-vue": "^5.1.12",
 		"axios": "^0.27.2",
+		"echarts": "^5.3.3",
+		"echarts-liquidfill": "^3.1.0",
 		"element-plus": "^2.2.12",
+		"js-md5": "^0.7.3",
 		"nprogress": "^0.2.0",
 		"pinia": "^2.0.17",
+		"pinia-plugin-persistedstate": "^2.1.0",
+		"qs": "^6.11.0",
 		"vue": "^3.2.37",
 		"vue-i18n": "^9.2.2",
 		"vue-router": "^4.1.2",
+		"vue3-seamless-scroll": "^2.0.1",
 		"vuex": "^4.0.2"
 	},
 	"devDependencies": {

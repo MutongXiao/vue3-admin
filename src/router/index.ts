@@ -1,52 +1,46 @@
-import { createRouter, createWebHistory, type RouteRecordRaw } from "vue-router";
-import nprogress from "nprogress";
-import "nprogress/nprogress.css";
+import { createRouter, createWebHashHistory, type RouteRecordRaw } from "vue-router";
 
-import AppLayout from "@/layout/AppLayout.vue";
-import productRoute from "./modules/product";
-import orderRoute from "./modules/order";
-import permissionRoute from "./modules/permission";
-import mediaRoute from "./modules/media";
-import settingRoute from "./modules/setting";
+// * 导入所有路由 routes 节点
+const metaRoutes = import.meta.globEager("./modules/*.ts");
+// * 处理路由表
+export const routesArray: RouteRecordRaw[] = [];
+Object.keys(metaRoutes).forEach(modKey => {
+	const mod = metaRoutes[modKey] as Record<string, RouteRecordRaw[]>;
+	routesArray.push(...mod.default);
+});
 
 const routes: RouteRecordRaw[] = [
 	{
 		path: "/",
-		component: AppLayout,
-		children: [
-			{
-				path: "",
-				name: "home",
-				meta: {
-					title: "首页"
-				},
-				component: () => import("@/views/home/index.vue")
-			},
-			productRoute,
-			orderRoute,
-			permissionRoute,
-			mediaRoute,
-			settingRoute
-		]
+		redirect: { name: "home" },
+		meta: {
+			requiresAuth: true
+		}
 	},
 	{
 		path: "/login",
 		name: "login",
-		component: () => import("@/views/login/index.vue")
+		component: () => import("@/views/login/index.vue"),
+		meta: {
+			requiresAuth: false,
+			title: "登录页",
+			key: "login"
+		}
+	},
+	...routesArray,
+	{
+		// 找不到路由重定向到404页面
+		path: "/:pathMatch(.*)",
+		redirect: { name: "404" }
 	}
 ];
 
 const router = createRouter({
-	history: createWebHistory(import.meta.env.BASE_URL),
-	routes
-});
-
-router.beforeEach(() => {
-	nprogress.start();
-});
-
-router.afterEach(() => {
-	nprogress.done();
+	history: createWebHashHistory(),
+	routes,
+	strict: false,
+	// 切换页面，滚动到最顶部
+	scrollBehavior: () => ({ left: 0, top: 0 })
 });
 
 export default router;

@@ -1,7 +1,26 @@
 <template>
-	<h3>Login Page</h3>
+	<div class="login-container flx-center">
+		<SwitchDark class="dark"></SwitchDark>
+		<div class="login-box">
+			<div class="login-left">
+				<img src="@/assets/images/login_left0.png" alt="login" />
+			</div>
+			<div class="login-form">
+				<div class="login-logo">
+					<img class="login-icon" src="@/assets/images/logo.svg" alt="" />
+					<h2 class="logo-text">Geeker-Admin</h2>
+				</div>
+				<LoginForm ref="loginRef"></LoginForm>
+			</div>
+		</div>
+	</div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import SwitchDark from "@/components/SwitchDark.vue";
+import LoginForm from "./LoginForm.vue";
+</script>
 
-<style lang="scss" scoped></style>
+<style scoped lang="scss">
+@import "./index.scss";
+</style>
