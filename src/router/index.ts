@@ -1,46 +1,53 @@
-import { createRouter, createWebHashHistory, type RouteRecordRaw } from "vue-router";
+import router from "@/router/router";
+import NProgress from "@/config/nprogress";
+import { AxiosCanceler } from "@/api/helper/axiosCancel";
+import { GlobalStore } from "@/store";
+import { AuthStore } from "@/store/modules/auth";
+import { HOME_URL } from "@/config/config";
 
-// * 导入所有路由 routes 节点
-const metaRoutes = import.meta.globEager("./modules/*.ts");
-// * 处理路由表
-export const routesArray: RouteRecordRaw[] = [];
-Object.keys(metaRoutes).forEach(modKey => {
-	const mod = metaRoutes[modKey] as Record<string, RouteRecordRaw[]>;
-	routesArray.push(...mod.default);
+const axiosCanceler = new AxiosCanceler();
+
+/**
+ * @description 路由拦截 beforeEach
+ * */
+router.beforeEach((to, from, next) => {
+	const globalStore = GlobalStore();
+	NProgress.start();
+	// * 在跳转路由之前，清除所有的请求
+	axiosCanceler.removeAllPending();
+	// 已登录，禁止访问登录页
+	if (to.path === "/login" && globalStore.token) return next({ name: "home" });
+
+	// * 判断当前路由是否需要访问权限
+	if (!to.matched.some(record => record.meta.requiresAuth)) return next();
+
+	// * 判断是否有Token
+	if (!globalStore.token) {
+		next({
+			path: "/login"
+		});
+		NProgress.done();
+		return;
+	}
+
+	const authStore = AuthStore();
+	// * Dynamic Router(动态路由，根据后端返回的菜单数据生成的一维数组)
+	const dynamicRouters = authStore.dynamicRouters;
+	// * Static Router(静态路由，必须配置首页地址，否则不能进首页获取菜单、
+	// 按钮权限等数据)，获取数据的时候会loading，所有配置首页地址也没问题
+	const staticRouter = [HOME_URL, "/403"];
+	const routerList = dynamicRouters.concat(staticRouter);
+
+	// * 如果访问的地址没有在路由表中重定向到403页面
+	if (routerList.indexOf(to.path) !== -1) return next();
+
+	next({
+		path: "/403"
+	});
 });
 
-const routes: RouteRecordRaw[] = [
-	{
-		path: "/",
-		redirect: { name: "home" },
-		meta: {
-			requiresAuth: true
-		}
-	},
-	{
-		path: "/login",
-		name: "login",
-		component: () => import("@/views/login/index.vue"),
-		meta: {
-			requiresAuth: false,
-			title: "登录页",
-			key: "login"
-		}
-	},
-	...routesArray,
-	{
-		// 找不到路由重定向到404页面
-		path: "/:pathMatch(.*)",
-		redirect: { name: "404" }
-	}
-];
-
-const router = createRouter({
-	history: createWebHashHistory(),
-	routes,
-	strict: false,
-	// 切换页面，滚动到最顶部
-	scrollBehavior: () => ({ left: 0, top: 0 })
+router.afterEach(() => {
+	NProgress.done();
 });
 
 export default router;

@@ -14,7 +14,7 @@ const homeRoute: Array<RouteRecordRaw> = [
 				component: () => import("@/views/home/index.vue"),
 				meta: {
 					keepAlive: true,
-					requiresAuth: true,
+					requiresAuth: false,
 					title: "首页",
 					key: "home"
 				}

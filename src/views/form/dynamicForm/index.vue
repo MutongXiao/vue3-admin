@@ -1,6 +1,6 @@
 <template>
 	<div class="content-box">
-		<el-button class="add" type="primary" @click="addDomain" plain>Add Input</el-button>
+		<el-button @click="addDomain" class="add" type="primary" plain>Add Input</el-button>
 		<el-form ref="formRef" :model="dynamicValidateForm" label-width="100px" class="demo-dynamic">
 			<el-form-item
 				prop="email"
@@ -23,7 +23,7 @@
 			<el-form-item
 				v-for="(domain, index) in dynamicValidateForm.domains"
 				:key="domain.key"
-				:label="'Domain' + index"
+				:label="'Domain-' + index"
 				:prop="'domains.' + index + '.value'"
 				:rules="{
 					required: true,
@@ -33,7 +33,7 @@
 			>
 				<el-input v-model="domain.value">
 					<template #append>
-						<el-button type="danger" plain class="mt-2" @click.prevent="removeDomain(domain)"> Delete </el-button>
+						<el-button @click="removeDomain(domain)" type="danger" plain class="mt-2">Delete</el-button>
 					</template>
 				</el-input>
 			</el-form-item>
@@ -46,10 +46,14 @@
 </template>
 
 <script setup lang="ts" name="dynamicForm">
-import { reactive, ref } from "vue";
-import type { FormInstance } from "element-plus";
+import { ref, reactive } from "vue";
+import { ElMessage, type FormInstance } from "element-plus";
 
 const formRef = ref<FormInstance>();
+interface DomainItem {
+	key: number;
+	value: string;
+}
 const dynamicValidateForm = reactive<{
 	domains: DomainItem[];
 	email: string;
@@ -63,10 +67,12 @@ const dynamicValidateForm = reactive<{
 	email: ""
 });
 
-interface DomainItem {
-	key: number;
-	value: string;
-}
+const addDomain = () => {
+	dynamicValidateForm.domains.push({
+		key: Date.now(),
+		value: ""
+	});
+};
 
 const removeDomain = (item: DomainItem) => {
 	const index = dynamicValidateForm.domains.indexOf(item);
@@ -75,20 +81,13 @@ const removeDomain = (item: DomainItem) => {
 	}
 };
 
-const addDomain = () => {
-	dynamicValidateForm.domains.push({
-		key: Date.now(),
-		value: ""
-	});
-};
-
 const submitForm = (formEl: FormInstance | undefined) => {
 	if (!formEl) return;
 	formEl.validate(valid => {
 		if (valid) {
-			console.log("submit!");
+			ElMessage.success("valid pass, do something");
 		} else {
-			console.log("error submit!");
+			ElMessage.error("error submit!");
 			return false;
 		}
 	});

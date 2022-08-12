@@ -9,7 +9,9 @@ import router from "@/router/index";
 export const TabsStore = defineStore({
 	id: "TabsState",
 	state: (): TabsState => ({
+		// 当前激活tab
 		tabsMenuValue: HOME_URL,
+		// 所有tabs value
 		tabsMenuList: [{ title: "首页", path: HOME_URL, icon: "home-filled", close: false }]
 	}),
 	getters: {},
@@ -31,18 +33,16 @@ export const TabsStore = defineStore({
 		// Remove Tabs
 		async removeTabs(tabPath: string) {
 			let tabsMenuValue = this.tabsMenuValue;
-			const tabsMenuList = this.tabsMenuList;
+			// 表示删除的是当地激活tab
 			if (tabsMenuValue === tabPath) {
-				tabsMenuList.forEach((item, index) => {
-					if (item.path !== tabPath) return;
-					const nextTab = tabsMenuList[index + 1] || tabsMenuList[index - 1];
-					if (!nextTab) return;
-					tabsMenuValue = nextTab.path;
-					router.push(nextTab.path);
-				});
+				const index = this.tabsMenuList.findIndex(item => item.path === tabPath);
+				const nextTab = this.tabsMenuList[index + 1] || this.tabsMenuList[index - 1];
+				if (!nextTab) return;
+				tabsMenuValue = nextTab.path;
+				router.push(nextTab.path);
 			}
 			this.tabsMenuValue = tabsMenuValue;
-			this.tabsMenuList = tabsMenuList.filter(item => item.path !== tabPath);
+			this.tabsMenuList = this.tabsMenuList.filter(item => item.path !== tabPath);
 		},
 		// Change Tabs
 		async changeTabs(tabItem: TabPaneProps) {

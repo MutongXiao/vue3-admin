@@ -27,3 +27,8 @@ export const getMenuList = async () => {
 	// });
 	// return res;
 };
+
+// * 获取按钮权限
+export const getAuthButtons = () => {
+	return http.get<Login.ResAuthButtons>(PORT1 + `/auth/buttons`);
+};

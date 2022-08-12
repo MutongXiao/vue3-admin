@@ -21,10 +21,10 @@ const config = reactive({
 });
 
 // element 语言配置
-const i18nLocale = computed((): any => {
+const i18nLocale = computed(() => {
 	if (globalStore.language && globalStore.language == "zh") return zhCn;
 	if (globalStore.language == "en") return en;
-	return "";
+	return en;
 });
 
 // 配置全局组件大小 (small/default(medium)/large)

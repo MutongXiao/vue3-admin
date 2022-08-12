@@ -1,30 +1,18 @@
 <template>
-	<div>
+	<div class="content-box">
 		<el-alert
-			title="引导页对于一些第一次进入项目的人很有用，你可以简单介绍下项目的功能。本 Demo 是基于 driver.js."
+			title="引导页对于用户第一次进入页面时很有用，可以对用户进行页面功能引导介绍。本 Demo 是基于 driver.js."
 			type="warning"
 			:closable="false"
 		/>
 		<br />
-		<div id="Geeker"><el-button type="primary" @click.prevent.stop="guide">打开引导页</el-button></div>
+		<div id="Geeker"><el-button type="primary" @click.prevent.stop="guide">打开引导页 🤹‍♂️</el-button></div>
 	</div>
 </template>
 
 <script setup lang="ts" name="guide">
 import Driver from "driver.js";
 import "driver.js/dist/driver.min.css";
-
-const guide = () => {
-	const driver: Driver = new Driver({
-		allowClose: false,
-		doneBtnText: "结束",
-		closeBtnText: "关闭",
-		nextBtnText: "下一步",
-		prevBtnText: "上一步"
-	});
-	driver.defineSteps(steps);
-	driver.start();
-};
 
 const steps = [
 	{
@@ -84,4 +72,18 @@ const steps = [
 		}
 	}
 ];
+
+const guide = () => {
+	const driver = new Driver({
+		allowClose: false,
+		doneBtnText: "结束",
+		closeBtnText: "关闭",
+		nextBtnText: "下一步",
+		prevBtnText: "上一步"
+	});
+	driver.defineSteps(steps);
+	driver.start();
+};
 </script>
+
+<style scoped lang="scss"></style>

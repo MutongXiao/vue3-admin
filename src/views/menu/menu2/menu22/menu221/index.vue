@@ -1,7 +1,7 @@
 <template>
 	<div class="content-box">
 		<span class="text">我是menu2-2-1 🍓🍇🍈🍉</span>
-		<el-input v-model="value" placeholder="测试缓存"></el-input>
+		<el-input v-model="value" placeholder="测试keep-alive缓存"></el-input>
 	</div>
 </template>
 

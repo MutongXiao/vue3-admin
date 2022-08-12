@@ -7,15 +7,17 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 import eslintPlugin from "vite-plugin-eslint";
 import viteCompression from "vite-plugin-compression";
 import { createHtmlPlugin } from "vite-plugin-html";
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import VueSetupExtend from "vite-plugin-vue-setup-extend";
-import AutoImport from "unplugin-auto-import/vite";
-import Components from "unplugin-vue-components/vite";
-import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
+// import AutoImport from "unplugin-auto-import/vite";
+// import Components from "unplugin-vue-components/vite";
+// import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import importToCDN from "vite-plugin-cdn-import";
 import Inspect from "vite-plugin-inspect";
 
 import { wrapperEnv } from "./src/utils/getEnv";
-const pathSrc = path.resolve(__dirname, "src");
+
+//const pathSrc = path.resolve(__dirname, "src");
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
@@ -35,29 +37,47 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 					}
 				}
 			}),
+			//用于生成 svg 雪碧图. 通过插件封装 SvgIcon 组件
+			createSvgIconsPlugin({
+				// 指定需要缓存的图标文件夹
+				iconDirs: [path.resolve(process.cwd(), "src/assets/icons")],
+				// 指定symbolId格式
+				symbolId: "icon-[dir]-[name]"
+				/**
+				 * 自定义插入位置
+				 * @default: body-last
+				 */
+				// inject?: 'body-last' | 'body-first'
+
+				/**
+				 * custom dom id
+				 * @default: __svg__icons__dom__
+				 */
+				// customDomId: '__svg__icons__dom__',
+			}),
 			// * EsLint 报错信息显示在浏览器界面上
 			eslintPlugin(),
 			// * name 可以写在 script 标签上
 			VueSetupExtend(),
 			// * demand import element(如果使用了cdn引入,没必要使用element自动导入了)
-			AutoImport({
-				// Auto import functions from Vue, e.g. ref, reactive, toRef...
-				// 自动导入 Vue 相关函数，如：ref, reactive, toRef 等
-				imports: ["vue"],
-				// Auto import functions from Element Plus, e.g. ElMessage, ElMessageBox... (with style)
-				// 自动导入 Element Plus 相关函数，如：ElMessage, ElMessageBox... (带样式)
-				resolvers: [ElementPlusResolver()],
-				dts: path.resolve(pathSrc, "auto-imports.d.ts")
-			}),
-			Components({
-				resolvers: [
-					// Auto register Element Plus components
-					// 自动导入 Element Plus 组件
-					ElementPlusResolver()
-				],
+			// AutoImport({
+			// 	// Auto import functions from Vue, e.g. ref, reactive, toRef...
+			// 	// 自动导入 Vue 相关函数，如：ref, reactive, toRef 等
+			// 	imports: ["vue"],
+			// 	// Auto import functions from Element Plus, e.g. ElMessage, ElMessageBox... (with style)
+			// 	// 自动导入 Element Plus 相关函数，如：ElMessage, ElMessageBox... (带样式)
+			// 	resolvers: [ElementPlusResolver()],
+			// 	dts: path.resolve(pathSrc, "auto-imports.d.ts")
+			// }),
+			// Components({
+			// 	resolvers: [
+			// 		// Auto register Element Plus components
+			// 		// 自动导入 Element Plus 组件。如果启用该配置项，可以在main.ts关闭Element Plus的全局注册
+			// 		ElementPlusResolver()
+			// 	],
 
-				dts: path.resolve(pathSrc, "components.d.ts")
-			}),
+			// 	dts: path.resolve(pathSrc, "components.d.ts")
+			// }),
 			// * cdn 引入（vue、element-plus）
 			importToCDN({
 				modules: [
@@ -100,7 +120,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 				"vue-i18n": "vue-i18n/dist/vue-i18n.cjs.js"
 			}
 		},
-		// global css
+		// global css 变量注入
 		css: {
 			preprocessorOptions: {
 				scss: {

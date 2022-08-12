@@ -7,7 +7,7 @@ export const MenuStore = defineStore("MenuState", {
 		// 菜单是否折叠
 		isCollapse: false,
 		// 菜单列表数据
-		menuList: []
+		menuList: [{ icon: "home-filled", title: "首页", path: "/home/index" }]
 	}),
 	getters: {},
 	actions: {

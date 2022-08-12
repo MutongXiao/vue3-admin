@@ -1,8 +1,19 @@
 <template>
 	<div class="content-box">
 		<el-alert
-			title="通过 component :is 组件属性 && v-bind 属性透传，可以将 template 中的 html 代码全部改变为 columns 配置项，具体配置请看代码。"
+			title="通过配置项生成element ui表单，利用 component :is 组件属性 && v-bind 属性透传，可以将 template 中的 html 代码全部改变为 columns 配置项，具体表单配置请看代码。"
+			type="success"
+			:closable="false"
+		/>
+		<el-divider>
+			<el-icon><star-filled /></el-icon>
+			<el-icon><star-filled /></el-icon>
+			<el-icon><star-filled /></el-icon>
+		</el-divider>
+		<el-alert
+			title="注意：使用自动导入Element Plus配置时，component 的:is 不可以使用字符串形式来使用Element Plus组件, 它不会触发自动导入"
 			type="warning"
+			effect="dark"
 			:closable="false"
 		/>
 		<component :is="'el-form'" v-bind="options.form" ref="proFormRef" :model="model">
@@ -11,18 +22,13 @@
 					<component :is="`el-${item.attrs.typeName}`" v-bind="item.attrs" v-model="model[item.formItem.prop]" />
 				</component>
 			</template>
-			<el-form-item>
-				<slot name="operation"></slot>
-			</el-form-item>
 		</component>
 	</div>
 </template>
 
 <script setup lang="ts" name="proForm">
 import { ref } from "vue";
-
 let model = ref<any>({});
-
 const options = ref({
 	// 表单整体配置项
 	form: {

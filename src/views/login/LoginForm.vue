@@ -71,8 +71,10 @@ const login = (formEl: FormInstance | undefined) => {
 			// * 存储 token
 			globalStore.setToken(res.data!.access_token);
 			// * 登录成功之后清除上个账号的 menulist 和 tabs 数据
-			menuStore.setMenuList([]);
-			tabStore.closeMultipleTab();
+			// menuStore.setMenuList([]);
+			// tabStore.closeMultipleTab();
+			menuStore.$reset();
+			tabStore.$reset();
 
 			ElMessage.success("登录成功！");
 			router.push({ name: "home" });

@@ -21,6 +21,7 @@ export default {
 		exitFullScreen: "退出全屏",
 		personalData: "个人资料",
 		changePassword: "修改密码",
-		logout: "退出登录"
+		logout: "退出登录",
+		logoin: "登录"
 	}
 };

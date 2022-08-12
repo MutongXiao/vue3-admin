@@ -2,6 +2,7 @@ import { computed, onBeforeMount } from "vue";
 import { getLightColor, getDarkColor } from "@/utils/theme/tool";
 import { GlobalStore } from "@/store";
 import { ElMessage } from "element-plus";
+import { DEFAULT_PRIMARY } from "@/config/config";
 
 /**
  * @description 切换主题
@@ -20,8 +21,8 @@ export const useTheme = () => {
 	// 修改主题颜色
 	const changePrimary = (val: string) => {
 		if (!val) {
-			val = "#409EFF";
-			ElMessage({ type: "success", message: "主题颜色已重置为 #409EFF" });
+			val = DEFAULT_PRIMARY;
+			ElMessage({ type: "success", message: `主题颜色已重置为 ${DEFAULT_PRIMARY}` });
 		}
 		globalStore.setThemeConfig({ ...themeConfig.value, primary: val });
 		// 颜色加深

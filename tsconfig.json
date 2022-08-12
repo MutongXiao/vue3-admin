@@ -3,7 +3,9 @@
 	"compilerOptions": {
 		"target": "esnext",
 		"useDefineForClassFields": true,
-		"composite": true,
+		// 移除此配置项，
+		// 否则在 src/compoents/SvgIcon/index.vue 会表红 <模块的默认导出具有或正在使用专用名称 “xxxx” ?
+		//"composite": true,
 		"module": "esnext",
 		"moduleResolution": "node",
 		/* Strict Type-Checking Options */
@@ -21,7 +23,7 @@
 		},
 		// 跳过库检查，解决打包失败
 		"skipLibCheck": true,
-		"types": ["node", "element-plus/global"]
+		"types": ["node", "element-plus/global", "vite-plugin-svg-icons/client"]
 	},
 	"include": [
 		"**/*.d.ts",
