@@ -13,7 +13,7 @@ export const AuthStore = defineStore("AuthStore", {
 	}),
 	getters: {
 		// 处理权限按钮数据，用于方便控制按钮
-		authButtonsOnj: state => {
+		authButtonsObj: state => {
 			return state.authButtons;
 		},
 		// 后台返回的菜单数据，用于方便控制路由跳转时权限（这里已经处理成一维数组了）

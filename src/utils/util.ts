@@ -150,7 +150,7 @@ export function getFlatArr(arr: any) {
  * @param {String} callValue 当前单元格值
  * @return string
  * */
-export function defaultFormat(row: number, col: number, callValue: any) {
+export function defaultFormat(row: number, col: any, callValue: any) {
 	// 如果当前值为数组,使用 / 拼接（根据需求自定义）
 	if (isArray(callValue)) return callValue.length ? callValue.join(" / ") : "--";
 	return callValue ?? "--";
@@ -174,7 +174,7 @@ export function formatValue(callValue: any) {
  * @param {String} type 过滤类型（目前只有 tag）
  * @return string
  * */
-export function filterEnum(callValue: any, enumData: any, searchProps?: { [key: string]: any }, type?: string): string {
+export function filterEnum(callValue: any, enumData: any, searchProps?: { [key: string]: any }, type?: string) {
 	const value = searchProps?.value ?? "value";
 	const label = searchProps?.label ?? "label";
 	let filterData = enumData.find((item: any) => item[value] === callValue);
