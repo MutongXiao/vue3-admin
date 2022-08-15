@@ -19,7 +19,7 @@
 <script setup lang="ts">
 // Echarts 为init（dom元素后的类型）
 // EChartsOption 为 option 的类型
-import { ECharts, EChartsOption, init } from "echarts";
+import { type ECharts, type EChartsOption, init } from "echarts";
 interface ChartProp {
 	man: number;
 	woman: number;

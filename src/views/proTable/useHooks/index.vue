@@ -44,6 +44,16 @@
 				<el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')" v-if="BUTTONS.add">新增用户</el-button>
 				<el-button type="primary" :icon="Upload" plain @click="batchAdd" v-if="BUTTONS.batchAdd">批量添加用户</el-button>
 				<el-button type="primary" :icon="Download" plain @click="downloadFile" v-if="BUTTONS.export">导出用户数据</el-button>
+				<el-button
+					v-if="BUTTONS.export"
+					:disabled="selectedList.length === 0 || xlsxLoading"
+					:loading="xlsxLoading"
+					@click="handleExportExcel"
+					type="primary"
+					:icon="Download"
+					plaib
+					>导出选中数据</el-button
+				>
 				<el-button type="danger" :icon="Delete" plain :disabled="!isSelected" @click="batchDelete" v-if="BUTTONS.batchDelete">
 					批量删除用户
 				</el-button>
@@ -90,16 +100,21 @@
 				</div>
 			</template>
 		</el-table>
-		<el-pagination
-			:currentPage="pageable.pageNum"
-			:page-size="pageable.pageSize"
-			:page-sizes="[10, 25, 50, 100]"
-			background
-			layout="total, sizes, prev, pager, next, jumper"
-			:total="pageable.total"
-			@size-change="handleSizeChange"
-			@current-change="handleCurrentChange"
-		></el-pagination>
+		<div class="pagination-box">
+			<div>
+				已选<span>{{ selectedList.length }}</span>
+			</div>
+			<el-pagination
+				:currentPage="pageable.pageNum"
+				:page-size="pageable.pageSize"
+				:page-sizes="[10, 25, 50, 100]"
+				background
+				layout="total, sizes, prev, pager, next, jumper"
+				:total="pageable.total"
+				@size-change="handleSizeChange"
+				@current-change="handleCurrentChange"
+			/>
+		</div>
 		<UserDrawer ref="drawerRef" />
 		<ImportExcel ref="dialogRef" />
 	</div>
@@ -139,6 +154,8 @@ import {
 	exportUserInfo
 } from "@/api/modules/user";
 
+// import { jsonToExcel } from "@/utils/export-to-excel";
+
 const genderType = [
 	{ label: "男", value: 1 },
 	{ label: "女", value: 2 }
@@ -160,7 +177,7 @@ const { tableData, pageable, searchParam, searchInitParam, getTableList, search,
 	useTable(getUserList, initParam);
 
 // 数据多选 hooks
-const { isSelected, selectedListIds, selectionChange, getRowKeys } = useSelection();
+const { isSelected, selectedList, selectedListIds, selectionChange, getRowKeys } = useSelection();
 
 // 页面按钮权限
 const { BUTTONS } = useAuthButtons();
@@ -197,6 +214,29 @@ const downloadFile = async () => {
 	useDownload(exportUserInfo, "用户列表", searchParam.value);
 };
 
+const xlsxLoading = ref(false);
+// 导出选中数据
+const handleExportExcel = async () => {
+	xlsxLoading.value = true;
+	// 方法被调用时才去加载xlsx模块，防止文件打包过大
+	const { jsonToExcel } = await import("@/utils/export-to-excel");
+	xlsxLoading.value = false;
+	jsonToExcel({
+		data: selectedList.value,
+		header: {
+			id: "编号",
+			age: "年龄",
+			username: "姓名",
+			gender: "性别",
+			idCard: "身份证号",
+			email: "邮箱",
+			avatar: "头像"
+		},
+		fileName: `${Date.now()}用户数据.xlsx`,
+		bookType: "xlsx"
+	});
+};
+
 // 批量添加用户
 interface DialogExpose {
 	acceptParams: (params: any) => void;
@@ -228,3 +268,14 @@ const openDrawer = (title: string, rowData: Partial<User.ResUserList> = { avatar
 	drawerRef.value!.acceptParams(params);
 };
 </script>
+
+<style lang="scss" scoped>
+.pagination-box {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	span {
+		margin: 0 10px;
+	}
+}
+</style>

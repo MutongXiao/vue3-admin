@@ -121,7 +121,7 @@
 			:pageable="pageable"
 			:handleSizeChange="handleSizeChange"
 			:handleCurrentChange="handleCurrentChange"
-		></Pagination>
+		/>
 		<!-- 列设置 -->
 		<ColSetting v-if="showToolButton" ref="colRef" :tableRef="tableRef" :colSetting="colSetting"></ColSetting>
 	</div>

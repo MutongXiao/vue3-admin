@@ -2,12 +2,13 @@
 	<!-- Gitee / GitHub 访问量占比 -->
 	<div class="echarts" id="pie"></div>
 </template>
+
 <script setup lang="ts" name="pie">
-import { ECharts, init } from "echarts";
+import { type ECharts, init } from "echarts";
 const initChart = (data: any): ECharts => {
 	const echartsBox = document.getElementById("pie") as HTMLElement;
 	const echarts: ECharts = init(echartsBox);
-	const option = {
+	const options = {
 		title: {
 			text: "Gitee / GitHub",
 			subtext: "访问占比",
@@ -114,7 +115,7 @@ const initChart = (data: any): ECharts => {
 			}
 		]
 	};
-	echarts.setOption(option);
+	echarts.setOption(options);
 	return echarts;
 };
 defineExpose({

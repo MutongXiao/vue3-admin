@@ -2,12 +2,13 @@
 	<!-- 数据来源 -->
 	<div class="echarts" id="curve"></div>
 </template>
+
 <script setup lang="ts" name="cure">
-import { ECharts, init } from "echarts";
+import { type ECharts, init } from "echarts";
 const initChart = (data: any): ECharts => {
-	const echartsBox = document.getElementById("curve") as HTMLElement;
-	const echarts: ECharts = init(echartsBox);
-	const option = {
+	const chartBox = document.getElementById("curve") as HTMLDialogElement;
+	const echarts = init(chartBox);
+	const options = {
 		tooltip: {
 			trigger: "axis",
 			backgroundColor: "transparent",
@@ -138,9 +139,10 @@ const initChart = (data: any): ECharts => {
 			}
 		]
 	};
-	echarts.setOption(option);
+	echarts.setOption(options);
 	return echarts;
 };
+
 defineExpose({
 	initChart
 });
