@@ -1,6 +1,88 @@
 import { isArray } from "@/utils/is";
 
 /**
+ * 数组去重
+ * @param {Array} arr 要去重的数组
+ * @returns Array
+ */
+export const uniqueArray = (arr: any[]) => [...new Set(arr)];
+
+/**
+ * 计算数值数组平均值
+ * @param {Array} arr 数值数组
+ * @returns Number 平均值
+ */
+export const average = (arr: number[]) => arr.reduce((a, b) => a + b) / arr.length;
+
+/**
+ * 计算两日期之间相差的天数
+ * @param startDay 开始日期对象
+ * @param endDay 结束日期对象
+ * @returns Number
+ */
+export const dayDiff = (startDay: Date, endDay: Date) => Math.ceil(Math.abs(startDay.getTime() - endDay.getTime()) / 86400000);
+
+/**
+ * 查询某天是否为工作日
+ * @param date 日期对象
+ * @returns Boolean
+ */
+export const isWorkDay = (date: Date) => date.getDay() % 6 !== 0;
+
+/**
+ * 获取 url 参数对象, 比如：http://www.xxx.com/search?q=js+md&newwindow=1
+ * @param {String} URL url字符串
+ * @returns Object
+ */
+export const getUrlParameters = (URL: string): Record<string, string> =>
+	JSON.parse(`{"${decodeURI(URL.split("?")[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"')}"}`);
+
+/**
+ * 判断对象是否为空对象{}
+ * @param {Object} obj 判断对象
+ * @returns Boolean
+ */
+export const isEmptyObject = (obj: object) => Reflect.ownKeys(obj).length === 0 && obj.constructor === Object;
+
+/**
+ * 反转字符串
+ * @param {String} str 字符串
+ * @returns String
+ */
+export const reverseStr = (str: string) => str.split("").reverse().join("");
+
+/**
+ * 生成随机十六进制 颜色值
+ * @returns String
+ */
+export const randomHexColor = () =>
+	`#${Math.floor(Math.random() * 0xffffff)
+		.toString(16)
+		.padEnd(6, "0")}`;
+
+/**
+ * RGB转十六进制颜色值
+ * @param r 0-255
+ * @param g 0-255
+ * @param b 0-255
+ * @returns String 十六进制颜色值
+ */
+export const rgbToHex = (r: number, g: number, b: number) => "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+
+/**
+ * 判断当前选项卡是否在后台
+ * @returns Boolean
+ */
+export const isTabActive = () => !document.hidden;
+
+/**
+ * 判断元素是否处于焦点，document.activeElement 属性返回文档中当前获得焦点的元素
+ * @param {HTMLElement} el
+ * @returns Boolean
+ */
+export const elementIsInFocus = (el: HTMLElement) => el === document.activeElement;
+
+/**
  * @description 获取localStorage
  * @param {String} key Storage名称
  * @return string

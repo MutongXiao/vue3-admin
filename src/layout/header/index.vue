@@ -18,9 +18,9 @@
 				<Fullscreen id="fullscreen"></Fullscreen>
 			</div>
 			<!-- User name -->
-			<span class="username">Geeker</span>
+			<span class="username">admin</span>
 			<!-- Avatar -->
-			<Avatar></Avatar>
+			<Avatar />
 		</div>
 	</div>
 </template>

@@ -41,26 +41,33 @@
 		</div>
 		<div class="table-header">
 			<div class="header-button-lf">
-				<el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')" v-if="BUTTONS.add">新增用户</el-button>
-				<el-button type="primary" :icon="Upload" plain @click="batchAdd" v-if="BUTTONS.batchAdd">批量添加用户</el-button>
-				<el-button type="primary" :icon="Download" plain @click="downloadFile" v-if="BUTTONS.export">导出用户数据</el-button>
-				<el-button
-					v-if="BUTTONS.export"
-					:disabled="selectedList.length === 0 || xlsxLoading"
-					:loading="xlsxLoading"
-					@click="handleExportExcel"
-					type="primary"
-					:icon="Download"
-					plaib
-					>导出选中数据</el-button
-				>
-				<el-button type="danger" :icon="Delete" plain :disabled="!isSelected" @click="batchDelete" v-if="BUTTONS.batchDelete">
-					批量删除用户
-				</el-button>
+				<Draggable>
+					<el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')" v-if="BUTTONS.add">新增用户</el-button>
+					<el-button type="primary" :icon="Upload" plain @click="batchAdd" v-if="BUTTONS.batchAdd">批量添加用户</el-button>
+					<el-button type="primary" :icon="Download" plain @click="downloadFile" v-if="BUTTONS.export">导出用户数据</el-button>
+					<el-button
+						v-if="BUTTONS.export"
+						:disabled="selectedList.length === 0 || xlsxLoading"
+						:loading="xlsxLoading"
+						@click="handleExportExcel"
+						type="primary"
+						:icon="Download"
+						plaib
+						>导出选中数据</el-button
+					>
+					<el-button type="danger" :icon="Delete" plain :disabled="!isSelected" @click="batchDelete" v-if="BUTTONS.batchDelete">
+						批量删除用户
+					</el-button>
+					<el-button> 按钮可推拽 </el-button>
+				</Draggable>
 			</div>
 			<div class="header-button-ri">
-				<el-button :icon="Refresh" circle @click="getTableList"> </el-button>
-				<el-button :icon="Search" circle @click="isShowSearch = !isShowSearch"> </el-button>
+				<el-tooltip effect="dark" content="刷新表格" placement="bottom">
+					<el-button :icon="Refresh" circle @click="getTableList"> </el-button>
+				</el-tooltip>
+				<el-tooltip effect="dark" :content="isShowSearch ? '隐藏搜索' : '展示搜索'" placement="bottom">
+					<el-button :icon="Search" circle @click="isShowSearch = !isShowSearch"> </el-button>
+				</el-tooltip>
 			</div>
 		</div>
 		<el-table :data="tableData" :border="true" @selection-change="selectionChange" :row-key="getRowKeys">
@@ -130,6 +137,7 @@ import { useSelection } from "@/hooks/useSelection";
 import { useAuthButtons } from "@/hooks/useAuthButtons";
 import { useTable } from "@/hooks/useTable";
 import ImportExcel from "@/components/ImportExcel/index.vue";
+import Draggable from "@/components/Draggable/index.vue";
 import UserDrawer from "@/views/proTable/components/UserDrawer.vue";
 import {
 	Refresh,
@@ -153,7 +161,6 @@ import {
 	resetUserPassWord,
 	exportUserInfo
 } from "@/api/modules/user";
-
 // import { jsonToExcel } from "@/utils/export-to-excel";
 
 const genderType = [

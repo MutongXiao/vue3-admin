@@ -18,7 +18,6 @@ import "element-plus/theme-chalk/dark/css-vars.css";
 
 import { createApp } from "vue";
 import App from "./App.vue";
-import router from "./router";
 // 全局导入注册 element plus
 import ElementPlus from "element-plus";
 // element icons
@@ -27,8 +26,12 @@ import * as Icons from "@element-plus/icons-vue";
 import I18n from "@/language/index";
 // svg icons
 import "virtual:svg-icons-register";
+// router
+import router from "./router";
 // pinia store
 import pinia from "@/store/index";
+// custom directives
+import directives from "@/directives/index";
 
 const app = createApp(App);
 // 注册element Icons组件
@@ -36,5 +39,5 @@ Object.keys(Icons).forEach(key => {
 	app.component(key, Icons[key as keyof typeof Icons]);
 });
 
-app.use(router).use(I18n).use(pinia).use(ElementPlus);
+app.use(router).use(I18n).use(pinia).use(ElementPlus).use(directives);
 app.mount("#app");
