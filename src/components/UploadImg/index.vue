@@ -1,6 +1,8 @@
 <template>
 	<div class="upload-box">
+		<el-progress v-if="isUploading" type="circle" :percentage="percentage" />
 		<el-upload
+			v-else
 			:http-request="handleHttpUpload"
 			:before-upload="beforeUpload"
 			:on-success="uploadSuccess"
@@ -42,7 +44,8 @@
 
 <script setup lang="ts" name="uploadImg">
 import { Plus } from "@element-plus/icons-vue";
-import { ElNotification, type UploadProps, type UploadRequestOptions } from "element-plus";
+import { ElNotification } from "element-plus";
+import type { UploadProps, UploadRequestOptions } from "element-plus";
 import { uploadImg } from "@/api/modules/upload";
 import { ref } from "vue";
 
@@ -62,6 +65,11 @@ const props = withDefaults(defineProps<IUploadFileProps>(), {
 	fileSize: 5,
 	uploadStyle: () => ({ width: "175px", height: "175px" })
 });
+
+// 上传进度
+const percentage = ref(0);
+// 是否处于上传状态
+const isUploading = ref(false);
 
 /**
  * @description 自定义事件，图片上传
@@ -95,11 +103,13 @@ const beforeUpload: UploadProps["beforeUpload"] = rawFile => {
 	return imgType.includes(rawFile.type) && isLt3M;
 };
 
+// 自行实现上传文件的请求
 const handleHttpUpload: UploadProps["httpRequest"] = async (options: UploadRequestOptions) => {
 	let formData = new FormData();
 	formData.append("file", options.file);
+	isUploading.value = true;
 	try {
-		const { data } = await uploadImg(formData);
+		const { data } = await uploadImg(formData, onProgress);
 		emit("update:imageUrl", data!.fileUrl);
 		emit("check-validate");
 	} catch (error) {
@@ -107,8 +117,15 @@ const handleHttpUpload: UploadProps["httpRequest"] = async (options: UploadReque
 	}
 };
 
+// 文件上传时的钩子
+const onProgress = (evt: any) => {
+	percentage.value = Math.floor((evt.loaded / evt.total) * 100);
+};
+
 // 图片上传成功提示
 const uploadSuccess = () => {
+	percentage.value = 0;
+	isUploading.value = false;
 	ElNotification({
 		title: "温馨提示",
 		message: "图片上传成功！",
@@ -118,6 +135,8 @@ const uploadSuccess = () => {
 
 // 图片上传错误提示
 const uploadError = () => {
+	percentage.value = 0;
+	isUploading.value = false;
 	ElNotification({
 		title: "温馨提示",
 		message: "图片上传失败，请您重新上传！",

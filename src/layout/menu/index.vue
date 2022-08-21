@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { getMenuList } from "@/api/modules/login";
 import { useRoute } from "vue-router";
 import { loadingSvg } from "@/utils/svg";
@@ -78,7 +78,7 @@ onMounted(async () => {
 	}
 });
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
 	window.removeEventListener("resize", windoeResizeHandler);
 });
 </script>

@@ -1,11 +1,22 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from "vue-router";
 
-// * 导入所有路由 routes 节点
-const metaRoutes = import.meta.globEager("./modules/*.ts");
+// * 从文件系统导入多个模块, 导入所有路由 routes 节点, globEager 已被弃用
+// const metaRoutes = import.meta.globEager("./modules/*.ts");
+// // * 处理路由表
+// export const routesArray: RouteRecordRaw[] = [];
+// Object.keys(metaRoutes).forEach(modKey => {
+// 	const mod = metaRoutes[modKey] as Record<string, RouteRecordRaw[]>;
+// 	routesArray.push(...mod.default);
+// });
+
+// glob 匹配到的文件默认是懒加载的，通过动态导入实现，并会在构建时分离为独立的 chunk。
+// 如果你倾向于直接引入所有的模块（例如依赖于这些模块中的副作用首先被应用），
+// 你可以传入 { eager: true } 作为第二个参数：
+const modules = import.meta.glob("./modules/*.ts", { eager: true });
 // * 处理路由表
 export const routesArray: RouteRecordRaw[] = [];
-Object.keys(metaRoutes).forEach(modKey => {
-	const mod = metaRoutes[modKey] as Record<string, RouteRecordRaw[]>;
+Reflect.ownKeys(modules).forEach(modPath => {
+	const mod = modules[modPath as string] as Record<string, RouteRecordRaw[]>;
 	routesArray.push(...mod.default);
 });
 

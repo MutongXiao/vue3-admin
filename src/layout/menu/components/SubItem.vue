@@ -13,11 +13,8 @@
 			<el-icon>
 				<component :is="subItem.icon"></component>
 			</el-icon>
-			<template v-if="!subItem.isLink" #title>
+			<template #title>
 				<span>{{ subItem.title }}</span>
-			</template>
-			<template v-else #title>
-				<a class="menu-href" :href="subItem.isLink" target="_blank">{{ subItem.title }}</a>
 			</template>
 		</el-menu-item>
 	</template>

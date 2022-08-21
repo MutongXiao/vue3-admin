@@ -130,14 +130,15 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 		},
 		server: {
 			host: "0.0.0.0", // 服务器主机名，如果允许外部访问，可设置为"0.0.0.0"
-			port: viteEnv.VITE_PORT,
-			open: viteEnv.VITE_OPEN,
+			port: viteEnv.VITE_PORT, // 启动端口
+			open: viteEnv.VITE_OPEN, // 自动打开浏览器
 			cors: true,
 			proxy: {
 				"^/api": {
-					//target: 'http://127.0.0.1:8001', // 代理目标地址
+					// target: 代理目标地址
 					// target: "https://www.fastmock.site/mock/f81e8333c1a9276214bcdbc170d9e0a0", // fastmock
-					target: "https://mock.mengxuegu.com/mock/629d727e6163854a32e8307e",
+					// target: "https://mock.mengxuegu.com/mock/629d727e6163854a32e8307e",
+					target: "https://mock.mengxuegu.com/mock/62f8303bf2652f239bd0a859",
 					// 兼容基于名字的虚拟主机
 					// a.com => localhost:xxx
 					// b.com => localhost:xxx

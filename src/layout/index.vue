@@ -12,7 +12,7 @@
 				<section class="main-box">
 					<router-view v-slot="{ Component, route }">
 						<transition appear name="fade-transform" mode="out-in">
-							<keep-alive :include="cacheRoutes">
+							<keep-alive :include="cacheRoutes" :max="10">
 								<component :is="Component" :key="route.path"></component>
 							</keep-alive>
 						</transition>
