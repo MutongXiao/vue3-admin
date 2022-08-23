@@ -20,6 +20,17 @@ const assemblyRouter: Array<RouteRecordRaw> = [
 					title: "todolist",
 					key: "todolist"
 				}
+			},
+			{
+				path: "/awesomeModules/painHeatMap",
+				name: "painHeatMap",
+				component: () => import("@/views/awesomeModules/painHeatMap/index.vue"),
+				meta: {
+					keepAlive: false,
+					requiresAuth: false,
+					title: "图片局部流动",
+					key: "painHeatMap"
+				}
 			}
 		]
 	}

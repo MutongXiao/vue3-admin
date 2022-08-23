@@ -1,0 +1,159 @@
+.content-box {
+	position: relative;
+	min-height: 100%;
+	margin: 0 auto;
+	overflow: scroll;
+	background: linear-gradient(to bottom, #434343, #121212);
+	scroll-behavior: smooth;
+}
+.bg {
+	position: absolute;
+	top: -50%;
+	right: -50%;
+	bottom: -50%;
+	left: -50%;
+	width: 200%;
+	height: 200%;
+	visibility: visible;
+	background: transparent url("./images/noise.png") repeat 0 0;
+	background-repeat: repeat;
+	opacity: 0.9;
+	animation: bg-animation 0.2s infinite;
+}
+@keyframes bg-animation {
+	0% {
+		transform: translate(0, 0);
+	}
+	10% {
+		transform: translate(-5%, -5%);
+	}
+	20% {
+		transform: translate(-10%, 5%);
+	}
+	30% {
+		transform: translate(5%, -10%);
+	}
+	40% {
+		transform: translate(-5%, 15%);
+	}
+	50% {
+		transform: translate(-10%, 5%);
+	}
+	60% {
+		transform: translate(15%, 0);
+	}
+	70% {
+		transform: translate(0, 10%);
+	}
+	80% {
+		transform: translate(-15%, 0);
+	}
+	90% {
+		transform: translate(10%, 5%);
+	}
+	100% {
+		transform: translate(5%, 0);
+	}
+}
+.title {
+	color: #efefef;
+}
+p {
+	margin-top: -5px;
+	margin-bottom: 15px;
+}
+main {
+	position: relative;
+	top: 0;
+	flex-shrink: 0;
+	width: 960px;
+	height: 540px;
+	overflow: hidden;
+	cursor: -webkit-grab;
+	cursor: grab;
+	background-image: url("./images/bg.jpg");
+	background-position: 100% 50%;
+	background-size: cover;
+	border: 1px groove rgb(255 255 255 / 20%);
+	border-radius: 16px;
+	box-shadow: 1px 1px 10px rgb(0 0 0 / 50%);
+}
+canvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+}
+.mask {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: none;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	mask-mode: luminance;
+	mask-size: 100% 100%;
+	backdrop-filter: hard-light;
+	mask-image: url("./images/mask.png");
+}
+.mask-inner {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: url("./images/bg.jpg") 0% 0% repeat;
+	filter: url("#heat");
+	background-position: 100% 50%;
+	background-size: cover;
+	mask-image: url("./images/mask.png");
+}
+.button_container {
+	position: relative;
+	bottom: 0;
+	margin: 40px auto;
+}
+.button {
+	position: relative;
+	width: 200px;
+	height: 40px;
+	margin-bottom: 12px;
+	overflow: hidden;
+	font-size: 18px;
+	font-weight: 600;
+	color: #000000;
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer;
+	background: #ffffff;
+	border: none;
+	border-radius: 12px;
+	border-radius: 8px;
+	outline: none;
+	box-shadow: 0 1px 0 hsl(200deg 5% 80%), 0 2px 0 hsl(200deg 5% 75%), 0 3px 0 hsl(200deg 5% 70%), 0 4px 0 hsl(200deg 5% 66%),
+		0 5px 0 hsl(200deg 5% 64%), 0 6px 0 hsl(200deg 5% 62%), 0 7px 0 hsl(200deg 5% 61%), 0 8px 0 hsl(200deg 5% 60%),
+		0 0 5px rgb(0 0 0 / 5%), 0 1px 3px rgb(0 0 0 / 20%), 0 3px 5px rgb(0 0 0 / 20%), 0 5px 8px rgb(0 0 0 / 20%);
+	-webkit-font-smoothing: antialiased;
+	appearance: none;
+}
+.button:hover {
+	background: #efefef;
+}
+.button:first-child {
+	margin-right: 24px;
+}
+.button .input {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+	background: transparent;
+	opacity: 0;
+	appearance: none;
+}
