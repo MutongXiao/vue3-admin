@@ -5,8 +5,8 @@
 			<UploadImg id="avatar1" v-model:imageUrl="avatar1Url">
 				<template #tip> 上传成功返回图片是模拟固定的 </template>
 			</UploadImg>
-			<UploadImg id="avatar2" v-model:imageUrl="avatar2Url" :uploadStyle="uploadStyle">
-				<template #tip> 圆形组件 </template>
+			<UploadImg id="avatar2" v-model:imageUrl="avatar2Url" :uploadStyle="uploadStyle" :compressImg="true">
+				<template #tip> 圆形组件（压缩上传） </template>
 			</UploadImg>
 			<UploadImg id="avatar3" v-model:imageUrl="avatar3Url" :disabled="true">
 				<template #tip> 禁用上传、删除功能 </template>
@@ -21,6 +21,7 @@
 			<el-descriptions-item label="uploadStyle">
 				上传组件样式，默认样式为 { width: "175px", height: "175px" }
 			</el-descriptions-item>
+			<el-descriptions-item label="compressImg"> 是否压缩后在上传（内部通过canvas api 实现图片压缩） </el-descriptions-item>
 		</el-descriptions>
 	</div>
 </template>

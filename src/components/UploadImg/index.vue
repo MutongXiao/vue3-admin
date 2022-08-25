@@ -56,6 +56,7 @@ interface IUploadFileProps {
 	disabled?: boolean; // 是否禁用上传组件 ==> 非必传（默认为false）
 	fileSize?: number; // 单个文件大小限制 ==> 非必传（默认为 5M）
 	uploadStyle?: { [key: string]: any }; // 上传组件样式 ==> 非必传
+	compressImg?: boolean; // 是否压缩上传
 }
 // 定义接收父组件所传的props以及默认值
 const props = withDefaults(defineProps<IUploadFileProps>(), {
@@ -63,7 +64,8 @@ const props = withDefaults(defineProps<IUploadFileProps>(), {
 	drag: true,
 	disabled: false,
 	fileSize: 5,
-	uploadStyle: () => ({ width: "175px", height: "175px" })
+	uploadStyle: () => ({ width: "175px", height: "175px" }),
+	compressImg: false
 });
 
 // 上传进度
@@ -80,6 +82,77 @@ interface UploadingEmits {
 	(e: "check-validate"): void;
 }
 const emit = defineEmits<UploadingEmits>();
+
+// 使用原生js压缩上传思路：File -> image Object -> canvas -> 压缩函数+toBold
+// 压缩前将file转image对象
+function readImg(file: File) {
+	return new Promise<HTMLImageElement>((resolve, reject) => {
+		const img = new Image();
+		const reader = new FileReader();
+		reader.onload = function (e: any) {
+			img.src = e.target.result;
+		};
+		reader.onerror = function (e) {
+			reject(e);
+		};
+		// 将读取的文件转url引用二进制数据
+		reader.readAsDataURL(file);
+		img.onload = function () {
+			resolve(img);
+		};
+		img.onerror = function (e) {
+			reject(e);
+		};
+	});
+}
+/**
+ * 压缩图片
+ * @param img 被压缩的image对象
+ * @param type 压缩后转换的文件类型
+ * @param mx 触发压缩的图片最大宽度限制
+ * @param mh 触发的压缩图片最大高度限制
+ * @param quality 压缩质量
+ */
+function compressImg(img: HTMLImageElement, type: string, mx: number, mh: number, quality: number = 1) {
+	return new Promise<Blob | null>((resolve, reject) => {
+		const canvas = document.createElement("canvas");
+		const ctx = canvas.getContext("2d");
+		const { width: originWidth, height: originHeight } = img;
+		// 最大尺寸限制
+		const maxWidth = mx;
+		const maxHeight = mh;
+		// 目标尺寸
+		let targetWidth = originWidth;
+		let targetHeight = originHeight;
+		if (originWidth > maxWidth || originHeight > maxHeight) {
+			if (originWidth / originHeight > 1) {
+				// 宽图片
+				targetWidth = maxWidth;
+				targetHeight = Math.round(maxWidth * (originHeight / originWidth));
+			} else {
+				// 高图片
+				targetHeight = maxHeight;
+				targetWidth = Math.round(maxHeight * (originWidth / originHeight));
+			}
+		}
+		canvas.width = targetWidth;
+		canvas.height = targetHeight;
+		ctx?.clearRect(0, 0, targetWidth, targetHeight);
+		// 图片绘制
+		ctx?.drawImage(img, 0, 0, targetWidth, targetHeight);
+		// 通过对canvas.toBlob设置quality参数对图片进行压缩
+		canvas.toBlob(
+			function (blob) {
+				resolve(blob);
+			},
+			type || "image/png",
+			quality
+		);
+		canvas.onerror = function (e) {
+			reject(e);
+		};
+	});
+}
 
 /**
  * @description 文件上传之前判断
@@ -105,8 +178,19 @@ const beforeUpload: UploadProps["beforeUpload"] = rawFile => {
 
 // 自行实现上传文件的请求
 const handleHttpUpload: UploadProps["httpRequest"] = async (options: UploadRequestOptions) => {
-	let formData = new FormData();
-	formData.append("file", options.file);
+	const formData = new FormData();
+	// console.log("size before compress", options.file.size);
+	if (props.compressImg) {
+		const imgFile = await readImg(options.file);
+		const bolbFile = await compressImg(imgFile, options.file.type, 800, 800, 20);
+		// console.log("size after compress", bolbFile?.size);
+		// 上传压缩后的图片
+		if (!bolbFile) throw "图片压缩失败";
+		formData.append("file", bolbFile);
+	} else {
+		// 这里上传的是原图片
+		formData.append("file", options.file);
+	}
 	isUploading.value = true;
 	try {
 		const { data } = await uploadImg(formData, onProgress);
