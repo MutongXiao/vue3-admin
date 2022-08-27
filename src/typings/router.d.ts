@@ -9,5 +9,6 @@ declare module "vue-router" {
 		requiresAuth?: boolean;
 		keepAlive?: boolean;
 		key?: string;
+		notransition?: boolean;
 	}
 }

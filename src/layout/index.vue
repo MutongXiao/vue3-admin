@@ -11,11 +11,12 @@
 			<el-main>
 				<section class="main-box">
 					<router-view v-slot="{ Component, route }">
-						<transition appear name="fade-transform" mode="out-in">
-							<keep-alive :include="cacheRoutes" :max="10">
-								<component :is="Component" :key="route.path"></component>
-							</keep-alive>
-						</transition>
+						<keep-alive :include="cacheRoutes" :max="10">
+							<component v-if="route.meta.notransition" :is="Component" :key="route.path" />
+							<transition v-else appear name="fade-transform" mode="out-in">
+								<component :is="Component" :key="route.path" />
+							</transition>
+						</keep-alive>
 					</router-view>
 				</section>
 			</el-main>

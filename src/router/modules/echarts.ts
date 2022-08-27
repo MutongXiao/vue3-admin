@@ -76,6 +76,18 @@ const echartsRouter: Array<RouteRecordRaw> = [
 					title: "嵌套环形图",
 					key: "nestedChart"
 				}
+			},
+			{
+				path: "/echarts/myCharts",
+				name: "myCharts",
+				component: () => import("@/views/echarts/myChart/index.vue"),
+				meta: {
+					notransition: true,
+					keepAlive: false,
+					requiresAuth: true,
+					title: "canvas原生绘制",
+					key: "myCharts"
+				}
 			}
 		]
 	}
