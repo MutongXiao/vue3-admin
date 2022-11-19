@@ -31,18 +31,20 @@ export const useDownload = async (
 		// 	type: "application/vnd.ms-excel;charset=UTF-8"
 		// });
 		const blob = new Blob([res]);
+
 		// 兼容edge不支持createObjectURL方法
 		if ("msSaveOrOpenBlob" in navigator) return window.navigator.msSaveOrOpenBlob(blob, tempName + fileType);
+
 		const blobUrl = window.URL.createObjectURL(blob);
 		const exportFile = document.createElement("a");
 		exportFile.style.display = "none";
 		exportFile.download = `${tempName}${fileType}`;
 		exportFile.href = blobUrl;
-		document.body.appendChild(exportFile);
+		//document.body.appendChild(exportFile);
 		// 触发点击下载
 		exportFile.click();
 		// 移除下载a标签
-		document.body.removeChild(exportFile);
+		//document.body.removeChild(exportFile);
 		//  URL.revokeObjectURL() 静态方法用来释放一个之前已经存在的、
 		// 通过调用 URL.createObjectURL() 创建的 URL 对象。
 		window.URL.revokeObjectURL(blobUrl);

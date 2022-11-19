@@ -39,6 +39,7 @@
 		"pinia-plugin-persistedstate": "^2.1.0",
 		"qs": "^6.11.0",
 		"sortablejs": "^1.15.0",
+		"three": "^0.143.0",
 		"vue": "^3.2.37",
 		"vue-i18n": "^9.2.2",
 		"vue-router": "^4.1.2",
@@ -53,6 +54,7 @@
 		"@types/node": "^16.11.45",
 		"@types/nprogress": "^0.2.0",
 		"@types/sortablejs": "^1.13.0",
+		"@types/three": "^0.143.1",
 		"@typescript-eslint/eslint-plugin": "^5.32.0",
 		"@typescript-eslint/parser": "^5.32.0",
 		"@vitejs/plugin-vue": "^3.0.1",
@@ -96,7 +98,7 @@
 		"vite-plugin-inspect": "^0.6.0",
 		"vite-plugin-svg-icons": "^2.0.1",
 		"vite-plugin-vue-setup-extend": "^0.4.0",
-		"vue-tsc": "^0.38.8"
+		"vue-tsc": "^1.0.9"
 	},
 	"config": {
 		"commitizen": {

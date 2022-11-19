@@ -263,3 +263,11 @@ export function filterEnum(callValue: any, enumData: any, searchProps?: { [key: 
 	if (type == "tag") return filterData?.tagType ? filterData.tagType : "";
 	return filterData ? filterData[label] : "--";
 }
+
+/**
+ * 获取项目中静态资源
+ * @param url 资源路径
+ */
+export function getStaticFile(url: string) {
+	return new URL(url, import.meta.url).href;
+}

@@ -31,6 +31,17 @@ const assemblyRouter: Array<RouteRecordRaw> = [
 					title: "图片局部流动",
 					key: "painHeatMap"
 				}
+			},
+			{
+				path: "/awesomeModules/threeVrRoom",
+				name: "painHeatMap",
+				component: () => import("@/views/awesomeModules/threeVrRoom/index.vue"),
+				meta: {
+					keepAlive: false,
+					requiresAuth: false,
+					title: "threejs3D看房",
+					key: "threeVrRoom"
+				}
 			}
 		]
 	}
