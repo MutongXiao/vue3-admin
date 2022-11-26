@@ -42,6 +42,17 @@ const assemblyRouter: Array<RouteRecordRaw> = [
 					title: "threejs3D看房",
 					key: "threeVrRoom"
 				}
+			},
+			{
+				path: "/awesomeModules/webWorkerDemo",
+				name: "painHeatMap",
+				component: () => import("@/views/awesomeModules/webWorker/index.vue"),
+				meta: {
+					keepAlive: false,
+					requiresAuth: false,
+					title: "web worker示例",
+					key: "webWorker"
+				}
 			}
 		]
 	}

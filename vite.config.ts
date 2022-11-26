@@ -13,6 +13,8 @@ import VueSetupExtend from "vite-plugin-vue-setup-extend";
 // import Components from "unplugin-vue-components/vite";
 // import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import importToCDN from "vite-plugin-cdn-import";
+// vxe-table 按需导入插件
+import { createStyleImportPlugin, VxeTableResolve } from "vite-plugin-style-import";
 import Inspect from "vite-plugin-inspect";
 
 import { wrapperEnv } from "./src/utils/getEnv";
@@ -54,6 +56,10 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 				 * @default: __svg__icons__dom__
 				 */
 				// customDomId: '__svg__icons__dom__',
+			}),
+			// vxe-table按需导入
+			createStyleImportPlugin({
+				resolves: [VxeTableResolve()]
 			}),
 			// * EsLint 报错信息显示在浏览器界面上
 			eslintPlugin(),

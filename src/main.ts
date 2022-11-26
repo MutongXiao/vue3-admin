@@ -32,6 +32,8 @@ import router from "./router";
 import pinia from "@/store/index";
 // custom directives
 import directives from "@/directives/index";
+// vxe-table 按需引入
+import useTable from "./views/awesomeModules/webWorker/demo/useTable";
 
 const app = createApp(App);
 // 注册element Icons组件
@@ -39,5 +41,5 @@ Object.keys(Icons).forEach(key => {
 	app.component(key, Icons[key as keyof typeof Icons]);
 });
 
-app.use(router).use(I18n).use(pinia).use(ElementPlus).use(directives);
+app.use(router).use(I18n).use(pinia).use(ElementPlus).use(directives).use(useTable);
 app.mount("#app");
