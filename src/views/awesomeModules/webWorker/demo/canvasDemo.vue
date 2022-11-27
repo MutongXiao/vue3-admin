@@ -10,6 +10,7 @@ const canvasWorker = new Worker(new URL("../worker/canvasWorker.js", import.meta
 function makeWorker() {
 	const htmlCanvas = document.getElementById("myCanvas") as HTMLCanvasElement;
 	// 使用canvas的transferControlToOffscreen函数获取一个OffscreenCanvas对象
+	//@ts-ignore
 	const offscreen = htmlCanvas.transferControlToOffscreen();
 	// 注意：第二个参数不能省略
 	canvasWorker.postMessage({ canvas: offscreen }, [offscreen]);
