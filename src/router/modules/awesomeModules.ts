@@ -45,7 +45,7 @@ const assemblyRouter: Array<RouteRecordRaw> = [
 			},
 			{
 				path: "/awesomeModules/webWorkerDemo",
-				name: "painHeatMap",
+				name: "webWorkerDemo",
 				component: () => import("@/views/awesomeModules/webWorker/index.vue"),
 				meta: {
 					keepAlive: false,
