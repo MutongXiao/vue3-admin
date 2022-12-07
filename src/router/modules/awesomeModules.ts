@@ -53,6 +53,17 @@ const assemblyRouter: Array<RouteRecordRaw> = [
 					title: "web worker示例",
 					key: "webWorker"
 				}
+			},
+			{
+				path: "/awesomeModules/drag-verify",
+				name: "dragVerify",
+				component: () => import("@/views/awesomeModules/dragVerify/index.vue"),
+				meta: {
+					keepAlive: false,
+					requiresAuth: false,
+					title: "滑块验证",
+					key: "dragVerify"
+				}
 			}
 		]
 	}
