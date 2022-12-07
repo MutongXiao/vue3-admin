@@ -122,7 +122,7 @@ const props = withDefaults(defineProps<IProps>(), {
 
 const isLoading = ref(true);
 const sliderClass = ref("sliderContainer");
-const sliderMaskWidth = ref(100);
+const sliderMaskWidth = ref(0);
 const textTip = ref(props.text);
 const panelRef = ref<HTMLCanvasElement>();
 const dragBlockRef = ref<HTMLCanvasElement>();
