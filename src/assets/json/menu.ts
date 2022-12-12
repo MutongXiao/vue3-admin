@@ -250,37 +250,6 @@ const menu = {
 					icon: "menu"
 				}
 			]
-		},
-		{
-			icon: "paperclip",
-			title: "外部链接",
-			path: "/link",
-			children: [
-				{
-					path: "/link/gitee",
-					title: "Gitee 仓库",
-					icon: "menu",
-					isLink: "https://gitee.com/laramie/Geeker-Admin"
-				},
-				{
-					path: "/link/github",
-					title: "GitHub 仓库",
-					icon: "menu",
-					isLink: "https://github.com/HalseySpicy/Geeker-Admin"
-				},
-				{
-					path: "/link/juejin",
-					title: "掘金文档",
-					icon: "menu",
-					isLink: "https://juejin.cn/post/7080820051422478366"
-				},
-				{
-					path: "/link/myBlog",
-					title: "个人博客",
-					icon: "menu",
-					isLink: "http://www.spicyboy.cn"
-				}
-			]
 		}
 	],
 	msg: "成功"

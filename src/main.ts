@@ -4,7 +4,7 @@ import "@/styles/reset.scss";
 // CSS common style sheet
 import "@/styles/common.scss";
 // custom element dark(自定义暗黑模式)
-import "@/styles/element-dark.scss";
+import "@/styles/theme/element-dark.scss";
 // custom element css
 import "@/styles/element.scss";
 // iconfont css
@@ -33,13 +33,17 @@ import pinia from "@/store/index";
 // custom directives
 import directives from "@/directives/index";
 // vxe-table 按需引入
-import useTable from "./views/awesomeModules/webWorker/demo/useTable";
+import useVxeTable from "./views/awesomeModules/webWorker/demo/useTable";
+// errorHandler
+import errorHandler from "@/utils/errorHandler";
 
 const app = createApp(App);
+
+app.config.errorHandler = errorHandler;
+
 // 注册element Icons组件
 Object.keys(Icons).forEach(key => {
 	app.component(key, Icons[key as keyof typeof Icons]);
 });
 
-app.use(router).use(I18n).use(pinia).use(ElementPlus).use(directives).use(useTable);
-app.mount("#app");
+app.use(router).use(I18n).use(pinia).use(ElementPlus).use(directives).use(useVxeTable).mount("#app");

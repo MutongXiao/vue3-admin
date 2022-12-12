@@ -13,7 +13,7 @@ export namespace Table {
 		searchInitParam: {
 			[key: string]: any;
 		};
-		allParam: {
+		totalParam: {
 			[key: string]: any;
 		};
 		icon?: {

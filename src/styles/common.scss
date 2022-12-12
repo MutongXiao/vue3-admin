@@ -1,4 +1,4 @@
-/* 常用 flex */
+/* flex */
 .flx-center {
 	display: flex;
 	align-items: center;
@@ -14,7 +14,7 @@
 	align-items: center;
 }
 
-/* 清除浮动 */
+/* clearfix */
 .clearfix::after {
 	display: block;
 	height: 0;
@@ -89,36 +89,12 @@
 
 /* nprogress样式 */
 #nprogress .bar {
-	background: $primary-color !important;
+	background: var(--el-color-primary) !important;
 }
 #nprogress .spinner-icon {
-	border-top-color: $primary-color !important;
-	border-left-color: $primary-color !important;
+	border-top-color: var(--el-color-primary) !important;
+	border-left-color: var(--el-color-primary) !important;
 }
 #nprogress .peg {
-	box-shadow: 0 0 10px $primary-color, 0 0 5px $primary-color !important;
-}
-
-/* content-box */
-.content-box {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	height: 100%;
-	.text {
-		margin: 30px 0;
-		font-size: 23px;
-		font-weight: bold;
-		color: rgb(88 88 88);
-	}
-	.el-descriptions {
-		width: 100%;
-		padding: 40px 0;
-		.el-descriptions__title {
-			font-size: 18px;
-		}
-		.el-descriptions__label {
-			width: 200px;
-		}
-	}
+	box-shadow: 0 0 10px var(--el-color-primary), 0 0 5px var(--el-color-primary) !important;
 }

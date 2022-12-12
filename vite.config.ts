@@ -1,6 +1,6 @@
 import { fileURLToPath, URL } from "node:url";
 import path from "path";
-import { defineConfig, loadEnv, type UserConfig, type ConfigEnv } from "vite";
+import { defineConfig, loadEnv, type UserConfig, type ConfigEnv, type PluginOption } from "vite";
 import { visualizer } from "rollup-plugin-visualizer";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
@@ -103,7 +103,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 				]
 			}),
 			// * 是否生成包预览
-			viteEnv.VITE_REPORT && visualizer(),
+			viteEnv.VITE_REPORT && (visualizer() as PluginOption),
 			// * gzip compress 是否开启gzip压缩
 			viteEnv.VITE_BUILD_GZIP &&
 				viteCompression({

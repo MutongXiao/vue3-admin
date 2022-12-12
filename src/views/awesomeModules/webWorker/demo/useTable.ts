@@ -50,7 +50,7 @@ VXETable.setup({
 	i18n: (key, args) => XEUtils.toFormatString(XEUtils.get(zhCN, key), args)
 });
 
-export default function useTable(app: App) {
+export default function useVxeTable(app: App) {
 	// 表格功能
 	// app.use(Filter)
 	// .use(Edit)

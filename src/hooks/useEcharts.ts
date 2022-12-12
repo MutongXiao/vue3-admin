@@ -1,4 +1,4 @@
-import { onUnmounted } from "vue";
+import { onActivated, onDeactivated, onBeforeUnmount } from "vue";
 import type * as echarts from "echarts";
 
 /**
@@ -15,9 +15,17 @@ export const useEcharts = (myChart: echarts.ECharts, options: echarts.EChartsCor
 		myChart && myChart.resize();
 	};
 
-	window.addEventListener("resize", echartsResize, false);
+	window.addEventListener("resize", echartsResize);
 
-	onUnmounted(() => {
+	onActivated(() => {
+		window.addEventListener("resize", echartsResize);
+	});
+
+	onDeactivated(() => {
+		window.removeEventListener("resize", echartsResize);
+	});
+
+	onBeforeUnmount(() => {
 		window.removeEventListener("resize", echartsResize);
 	});
 };

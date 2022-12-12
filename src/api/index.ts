@@ -7,6 +7,7 @@ import { ResultEnum } from "@/enums/httpEnum";
 import { checkStatus } from "./helper/checkStatus";
 import { ElMessage } from "element-plus";
 import { GlobalStore } from "@/store";
+import { LOGIN_URL } from "@/config/config";
 import router from "@/router";
 
 /**
@@ -69,9 +70,7 @@ class RequestHttp {
 				if (data.code == ResultEnum.OVERDUE) {
 					ElMessage.error(data.msg);
 					globalStore.setToken("");
-					router.replace({
-						path: "/login"
-					});
+					router.replace(LOGIN_URL);
 					return Promise.reject(data);
 				}
 				// * 全局错误信息拦截（防止下载文件得时候返回数据流，没有code，直接报错）

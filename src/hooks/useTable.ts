@@ -31,7 +31,7 @@ export const useTable = (
 		// 初始化默认的查询参数
 		searchInitParam: {},
 		// 总参数(包含分页和查询参数)
-		allParam: {}
+		totalParam: {}
 	});
 
 	/**
@@ -61,8 +61,8 @@ export const useTable = (
 	const getTableList = async () => {
 		try {
 			// 先把初始化参数和分页参数放到总参数里面
-			Object.assign(state.allParam, initParam, isPageable ? pageParam.value : {});
-			let { data } = await api(state.allParam);
+			Object.assign(state.totalParam, initParam, isPageable ? pageParam.value : {});
+			let { data } = await api(state.totalParam);
 			dataCallBack && (data = dataCallBack(data));
 			state.tableData = isPageable ? data.datalist : data;
 			// 解构后台返回的分页数据 (如果有分页更新分页信息)
@@ -78,9 +78,9 @@ export const useTable = (
 	 * @return void
 	 * */
 	const updatedTotalParam = () => {
-		state.allParam = {};
+		state.totalParam = {};
 		// 处理查询参数，可以给查询参数加自定义前缀操作
-		let nowSearchParam: { [propName: string]: any } = {};
+		let nowSearchParam: { [key: string]: any } = {};
 		// 防止手动清空输入框携带参数（这里可以自定义查询参数前缀）
 		for (let key in state.searchParam) {
 			// * 某些情况下参数为 false/0 也应该携带参数
@@ -88,7 +88,7 @@ export const useTable = (
 				nowSearchParam[key] = state.searchParam[key];
 			}
 		}
-		Object.assign(state.allParam, nowSearchParam, isPageable ? pageParam.value : {});
+		Object.assign(state.totalParam, nowSearchParam, isPageable ? pageParam.value : {});
 	};
 
 	/**

@@ -1,8 +1,8 @@
 <template>
 	<div class="dataVisualize-box">
-		<div class="top-box">
+		<div class="card top-box">
 			<div class="top-title">数据可视化</div>
-			<el-tabs v-model="tabValue.activeName" class="demo-tabs" @tab-click="handleTabClick">
+			<el-tabs v-model="tabActive" class="demo-tabs">
 				<el-tab-pane v-for="item in tab" :key="item.name" :label="item.label" :name="item.name"></el-tab-pane>
 			</el-tabs>
 			<div class="top-content">
@@ -11,7 +11,7 @@
 					<div class="img-box">
 						<img src="./images/book-sum.png" alt="" />
 					</div>
-					<span class="left-number">{{ tabValue.bookSum }}</span>
+					<span class="left-number">848.132w</span>
 				</div>
 				<div class="item-center">
 					<div class="gitee-traffic traffic-box">
@@ -51,10 +51,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="bottom-box">
+		<div class="card bottom-box">
 			<div class="bottom-title">数据来源</div>
 			<div class="bottom-tabs">
-				<el-tabs v-model="tabValue.activeName" class="demo-tabs" @tab-click="handleTabClick">
+				<el-tabs v-model="tabActive" class="demo-tabs">
 					<el-tab-pane v-for="item in tab" :key="item.name" :label="item.label" :name="item.name"></el-tab-pane>
 				</el-tabs>
 			</div>
@@ -66,27 +66,19 @@
 </template>
 
 <script setup lang="ts" name="dataVisualize">
-import { ref, reactive, onMounted, onBeforeUnmount } from "vue";
-import type { ECharts } from "echarts";
+import { ref, onMounted } from "vue";
 import Pie from "./components/pie.vue";
 import Curve from "./components/curve.vue";
 
-/* 声明echarts实例 */
-interface ChartProps {
-	[key: string]: ECharts | null;
-}
+const tabActive = ref(1);
+const pieRef = ref();
+const curveRef = ref();
 
-/* 获取子组件的ref */
-interface ChartExpose {
-	initChart: (params: any) => ECharts;
-}
-
-const pieRef = ref<ChartExpose>();
-const curveRef = ref<ChartExpose>();
-const tabValue = reactive({
-	activeName: 1,
-	bookSum: "848.132w"
+onMounted(() => {
+	pieRef.value.initChart(pieData);
+	curveRef.value.initChart(curveData);
 });
+
 const tab = [
 	{ label: "未来7日", name: 1 },
 	{ label: "近七日", name: 2 },
@@ -95,35 +87,6 @@ const tab = [
 	{ label: "近半年", name: 5 },
 	{ label: "近一年", name: 6 }
 ];
-const handleTabClick = (pane: any): void => {
-	switch (pane.index) {
-		case "1":
-			tabValue.bookSum = "848.132w";
-			break;
-		case "2":
-			tabValue.bookSum = "648.132w";
-			break;
-		case "3":
-			tabValue.bookSum = "788.232w";
-			break;
-		case "4":
-			tabValue.bookSum = "828.332w";
-			break;
-		case "5":
-			tabValue.bookSum = "398.632w";
-			break;
-		default:
-			tabValue.bookSum = "1098.632w";
-			break;
-	}
-};
-
-const charts: ChartProps = reactive({
-	chart1: null,
-	chart2: null
-});
-
-// 模拟数据
 const pieData = [
 	{ value: 5000, name: "Gitee 访问量" },
 	{ value: 5000, name: "GitHub 访问量" }
@@ -139,32 +102,6 @@ const curveData = [
 	{ value: 80, spotName: "StackOverFlow" },
 	{ value: 50, spotName: "博客园" }
 ];
-
-/* 初始化 echarts */
-const initCharts = (): void => {
-	charts.chart1 = pieRef.value?.initChart(pieData) as ECharts;
-	charts.chart2 = curveRef.value?.initChart(curveData) as ECharts;
-};
-
-onMounted(() => {
-	/* 初始化echarts */
-	initCharts();
-	// 为浏览器绑定事件
-	window.addEventListener("resize", resize);
-});
-
-/* 浏览器监听 resize 事件 */
-const resize = () => {
-	// 使用了 scale 的echarts其实不需要需要重新计算缩放比例
-	Object.values(charts).forEach(chart => {
-		chart && chart.resize();
-	});
-};
-
-/* 销毁时触发 */
-onBeforeUnmount(() => {
-	window.removeEventListener("resize", resize);
-});
 </script>
 
 <style scoped lang="scss">

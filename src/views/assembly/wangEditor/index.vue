@@ -1,6 +1,6 @@
 <template>
-	<div class="content-box">
-		<span class="text">WangEditor 🍓🍇🍈🍉</span>
+	<div class="card content-box">
+		<span class="text">富文本编辑器 🍓🍇🍈🍉</span>
 		<WangEditor height="400px" v-model:value="content" />
 		<el-button type="primary" @click="dialogVisible = true">内容预览</el-button>
 		<el-descriptions title="配置项 📚" :column="1" border>
@@ -24,12 +24,13 @@
 	</div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="wangEditor">
 import { ref } from "vue";
 import WangEditor from "@/components/WangEditor/index.vue";
 
-const dialogVisible = ref(false);
 const content = ref("");
+
+const dialogVisible = ref(false);
 </script>
 
 <style scoped lang="scss">

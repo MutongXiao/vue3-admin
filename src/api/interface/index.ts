@@ -6,7 +6,7 @@ export interface Result {
 
 // * 请求响应参数(包含data)
 export interface ResultData<T = any> extends Result {
-	data?: T;
+	data: T;
 }
 
 // * 分页响应参数
@@ -31,9 +31,12 @@ export namespace Login {
 	}
 	export interface ResLogin {
 		access_token: string;
+		username: string;
 	}
 	export interface ResAuthButtons {
-		[propName: string]: any;
+		[key: string]: {
+			[key: string]: boolean;
+		};
 	}
 }
 
@@ -52,7 +55,11 @@ export namespace User {
 		id: string;
 		username: string;
 		gender: string;
-		age: number;
+		user: {
+			detail: {
+				age: number;
+			};
+		};
 		idCard: string;
 		email: string;
 		address: string;
@@ -68,6 +75,11 @@ export namespace User {
 	export interface ResGender {
 		genderLabel: string;
 		genderValue: number;
+	}
+	export interface ResDepartment {
+		id: string;
+		name: string;
+		children?: ResDepartment[];
 	}
 }
 

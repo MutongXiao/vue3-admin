@@ -1,40 +1,54 @@
 /* themeConfigProp */
-export interface ThemeConfigProp {
+export interface ThemeConfigProps {
+	layout: string;
 	primary: string;
 	isDark: boolean;
 	isGrey: boolean;
+	isCollapse: boolean;
 	isWeak: boolean;
 	breadcrumb: boolean;
+	breadcrumbIcon: boolean;
 	tabs: boolean;
+	tabsIcon: boolean;
 	footer: boolean;
+	maximize: boolean;
 }
 
 /* GlobalState */
-export type IAssemblySize = "" | "default" | "small" | "large";
 export interface GlobalState {
 	token: string;
 	userInfo: any;
-	assemblySize: IAssemblySize;
+	assemblySize: "" | "default" | "small" | "large";
 	language: string;
-	themeConfig: ThemeConfigProp;
+	themeConfig: ThemeConfigProps;
 }
 
-/* MenuState */
-export interface MenuState {
-	isCollapse: boolean;
-	menuList: Menu.MenuOptions[];
+/* tabsMenuProps */
+export interface TabsMenuProps {
+	icon: string;
+	title: string;
+	path: string;
+	name: string;
+	close: boolean;
 }
 
 /* TabsState */
 export interface TabsState {
-	tabsMenuValue: string;
-	tabsMenuList: Menu.MenuOptions[];
+	tabsMenuList: TabsMenuProps[];
 }
 
 /* AuthState */
 export interface AuthState {
-	authButtons: {
-		[propName: string]: any;
+	routeName: string;
+	authButtonList: {
+		[key: string]: {
+			[key: string]: boolean;
+		};
 	};
-	authRouters: string[];
+	authMenuList: Menu.MenuOptions[];
+}
+
+/* keepAliveState */
+export interface keepAliveState {
+	keepLiveName: string[];
 }

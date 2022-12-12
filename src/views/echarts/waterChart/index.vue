@@ -1,5 +1,5 @@
 <template>
-	<div ref="echartsRef" class="content-box">waterChart</div>
+	<div ref="echartsRef" class="card content-box"></div>
 </template>
 
 <script setup lang="ts" name="waterChart">
@@ -10,10 +10,10 @@ import "echarts-liquidfill";
 
 const echartsRef = ref<HTMLElement>();
 onMounted(() => {
-	const myChart: echarts.ECharts = echarts.init(echartsRef.value as HTMLElement);
-	const value = 0.5;
-	const data = [value, value, value];
-	const option: echarts.EChartsCoreOption = {
+	let myChart: echarts.ECharts = echarts.init(echartsRef.value as HTMLElement);
+	let value = 0.5;
+	let data = [value, value, value];
+	let option: echarts.EChartsCoreOption = {
 		title: [
 			{
 				text: "预约量",

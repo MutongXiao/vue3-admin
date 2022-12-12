@@ -25,7 +25,7 @@ interface EmitsType {
 
 const emit = defineEmits<EmitsType>();
 
-const draggableContainer = ref<HTMLDivElement | null>(null);
+const draggableContainer = ref<HTMLDivElement>();
 const initDraggable = () => {
 	if (!draggableContainer.value) return;
 	Sortable.create(draggableContainer.value, {

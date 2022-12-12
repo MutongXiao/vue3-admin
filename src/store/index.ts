@@ -1,15 +1,13 @@
-import { defineStore } from "pinia";
-import type { GlobalState, IAssemblySize, ThemeConfigProp } from "./interface";
-import { createPinia } from "pinia";
+import { defineStore, createPinia } from "pinia";
+import type { GlobalState, ThemeConfigProps } from "./interface";
+import { DEFAULT_PRIMARY } from "@/config/config";
 import piniaPersistConfig from "@/config/piniaPersist";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
-import { getBrowserLang } from "@/utils/util";
-import { DEFAULT_PRIMARY } from "@/config/config";
 
 // defineStore 调用后返回一个函数，调用该函数获得 Store 实体
-export const GlobalStore = defineStore("GlobalState", {
+export const GlobalStore = defineStore({
 	// id: 必须的，在所有 Store 中唯一
-	// id: "GlobalState",
+	id: "GlobalState",
 	// state: 返回对象的函数
 	state: (): GlobalState => ({
 		// token
@@ -19,9 +17,11 @@ export const GlobalStore = defineStore("GlobalState", {
 		// element组件大小
 		assemblySize: "default",
 		// language
-		language: getBrowserLang(),
+		language: "",
 		// themeConfig
 		themeConfig: {
+			// 布局切换 ==>  纵向：vertical | 经典：classic | 横向：transverse | 分栏：columns
+			layout: "vertical",
 			// 默认 primary 主题颜色
 			primary: DEFAULT_PRIMARY,
 			// 深色模式
@@ -30,12 +30,20 @@ export const GlobalStore = defineStore("GlobalState", {
 			isGrey: false,
 			// 色弱模式
 			isWeak: false,
-			// 面包屑导航
+			// 是否折叠菜单
+			isCollapse: false,
+			// 是否显示面包屑导航
 			breadcrumb: true,
-			// 标签页
+			// 是否显示面包屑导航图标
+			breadcrumbIcon: true,
+			// 是否显示标签页
 			tabs: true,
-			// 页脚
-			footer: true
+			// 是否显示标签页图标
+			tabsIcon: true,
+			// 是否显示页脚
+			footer: true,
+			// 当前页面是否全屏
+			maximize: false
 		}
 	}),
 	getters: {},
@@ -49,7 +57,7 @@ export const GlobalStore = defineStore("GlobalState", {
 			this.userInfo = userInfo;
 		},
 		// setAssemblySizeSize
-		setAssemblySizeSize(assemblySize: IAssemblySize) {
+		setAssemblySizeSize(assemblySize: GlobalState["assemblySize"]) {
 			this.assemblySize = assemblySize;
 		},
 		// updateLanguage
@@ -57,14 +65,14 @@ export const GlobalStore = defineStore("GlobalState", {
 			this.language = language;
 		},
 		// setThemeConfig
-		setThemeConfig(themeConfig: ThemeConfigProp) {
+		setThemeConfig(themeConfig: ThemeConfigProps) {
 			this.themeConfig = themeConfig;
 		}
 	},
 	persist: piniaPersistConfig("GlobalState")
 });
 
-// 创建pinia实例，并通过 piniaPersist(持久化)数据
+// piniaPersist(持久化)
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 

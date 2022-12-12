@@ -1,16 +1,19 @@
 <template>
-	<!-- 列显隐设置 -->
-	<el-drawer title="列设置" v-model="drawerVisible" size="400px">
-		<div class="table-box">
-			<el-table height="575" :data="colSetting" :border="true">
-				<el-table-column prop="label" label="列名" />
-				<el-table-column prop="name" label="显示" v-slot="scope">
-					<el-switch v-model="scope.row.isShow" @click="switchFieldShow"></el-switch>
+	<!-- 列设置 -->
+	<el-drawer title="列设置" v-model="drawerVisible" size="500px">
+		<div class="table" ref="colTableRef">
+			<el-table :data="colSetting" :border="true" row-key="prop" default-expand-all :tree-props="{ children: '_children' }">
+				<el-table-column prop="label" align="center" label="列名" />
+				<el-table-column prop="isShow" align="center" label="显示" v-slot="scope">
+					<el-switch v-model="scope.row.isShow"></el-switch>
+				</el-table-column>
+				<el-table-column prop="sortable" align="center" label="排序" v-slot="scope">
+					<el-switch v-model="scope.row.sortable"></el-switch>
 				</el-table-column>
 				<template #empty>
 					<div class="table-empty">
 						<img src="@/assets/images/notData.png" alt="notData" />
-						<div>暂无数据</div>
+						<div>暂无可配置列</div>
 					</div>
 				</template>
 			</el-table>
@@ -19,25 +22,24 @@
 </template>
 
 <script setup lang="ts" name="colSetting">
-import { ref, nextTick } from "vue";
+import { ref } from "vue";
 import type { ColumnProps } from "@/components/ProTable/interface";
 
-const props = defineProps<{ colSetting: Partial<ColumnProps>[]; tableRef: any }>();
+defineProps<{ colSetting: ColumnProps[] }>();
 
 const drawerVisible = ref<boolean>(false);
 // 打开列设置
-const openColSetting = (): void => {
+const openColSetting = () => {
 	drawerVisible.value = true;
-};
-
-// 表列字段显隐切换时重新布局 table（防止表格抖动,隐藏显示之后会出现横向滚动条,element-plus 内部问题，已经提了 issues）
-const switchFieldShow = () => {
-	nextTick(() => {
-		props.tableRef.doLayout();
-	});
 };
 
 defineExpose({
 	openColSetting
 });
 </script>
+
+<style scoped lang="scss">
+.cursor-move {
+	cursor: move;
+}
+</style>

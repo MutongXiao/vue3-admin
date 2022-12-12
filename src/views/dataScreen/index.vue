@@ -3,11 +3,11 @@
 		<div class="dataScreen" ref="dataScreenRef">
 			<div class="dataScreen-header">
 				<div class="header-lf">
-					<span class="header-screening" @click="goHome">首页</span>
+					<span class="header-screening" @click="handleTo">首页</span>
 				</div>
 				<div class="header-ct">
 					<div class="header-ct-title">
-						<span>智慧旅游可视化数据监控大屏</span>
+						<span>智慧旅游可视化大数据展示平台</span>
 						<div class="header-ct-warning">平台高峰预警信息（2条）</div>
 					</div>
 				</div>
@@ -117,7 +117,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref, reactive, onMounted, onBeforeUnmount } from "vue";
+import { ref, type Ref, onMounted, onBeforeUnmount } from "vue";
 import { HOME_URL } from "@/config/config";
 import { randomNum } from "@/utils/util";
 import { useRouter } from "vue-router";
@@ -154,7 +154,7 @@ onMounted(() => {
 interface ChartProps {
 	[key: string]: ECharts | null;
 }
-const dataScreen: ChartProps = reactive({
+const dataScreen: ChartProps = {
 	chart1: null,
 	chart2: null,
 	chart3: null,
@@ -163,7 +163,7 @@ const dataScreen: ChartProps = reactive({
 	chart6: null,
 	chart7: null,
 	mapChart: null
-});
+};
 /* 获取子组件的ref */
 interface ChartExpose {
 	initChart: (params: any) => ECharts;
@@ -177,7 +177,7 @@ const OverNext30Ref = ref<ChartExpose>();
 const PlatformSourceRef = ref<ChartExpose>();
 const MapchartRef = ref<ChartExpose>();
 /* 初始化 charts参数 */
-const ageData = [
+let ageData = [
 	{
 		value: 200,
 		name: "10岁以下",
@@ -209,7 +209,7 @@ const ageData = [
 		percentage: "20%"
 	}
 ];
-const hotData = [
+let hotData = [
 	{
 		value: 79999,
 		name: "峨眉山",
@@ -241,7 +241,7 @@ const hotData = [
 		maxValue: 100000
 	}
 ];
-const platFromData = [
+let platFromData = [
 	{
 		value: 40,
 		name: "智慧文旅平台",
@@ -263,7 +263,7 @@ const platFromData = [
 		percentage: "30%"
 	}
 ];
-const annualData = [
+let annualData = [
 	{
 		label: new Date().getFullYear() - 2 + "年",
 		value: ["184", "90", "120", "0", "30", "100", "80", "40", "20", "510", "350", "180"]
@@ -277,7 +277,7 @@ const annualData = [
 		value: ["548", "259", "113", "90", "69", "512", "23", "49", "28", "420", "313", "156"]
 	}
 ];
-const mapData = [
+let mapData = [
 	{
 		fromName: "北京",
 		toName: "上海",
@@ -412,7 +412,7 @@ timer = setInterval(() => {
 
 /* 跳转home */
 const router = useRouter();
-const goHome = (): void => {
+const handleTo = () => {
 	router.push(HOME_URL);
 };
 

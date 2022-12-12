@@ -1,16 +1,15 @@
 <template>
-	<div ref="echartsRef" class="content-box"></div>
+	<div ref="echartsRef" class="card content-box"></div>
 </template>
 
-<script setup lang="ts" name="RadarChart">
+<script setup lang="ts" name="radarChart">
 import { ref, onMounted } from "vue";
 import * as echarts from "echarts";
 import { useEcharts } from "@/hooks/useEcharts";
-
 const echartsRef = ref<HTMLElement>();
 onMounted(() => {
-	const myChart: echarts.ECharts = echarts.init(echartsRef.value as HTMLElement);
-	const option: echarts.EChartsOption = {
+	let myChart: echarts.ECharts = echarts.init(echartsRef.value as HTMLElement);
+	let option: echarts.EChartsOption = {
 		title: {
 			text: "Basic Radar Chart",
 			textStyle: {

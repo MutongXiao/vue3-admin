@@ -1,14 +1,16 @@
 <template>
 	<!-- Gitee / GitHub 访问量占比 -->
-	<div class="echarts" id="pie"></div>
+	<div ref="echartsRef" class="echarts"></div>
 </template>
-
 <script setup lang="ts" name="pie">
-import { type ECharts, init } from "echarts";
-const initChart = (data: any): ECharts => {
-	const echartsBox = document.getElementById("pie") as HTMLElement;
-	const echarts: ECharts = init(echartsBox);
-	const options = {
+import { ref } from "vue";
+import * as echarts from "echarts";
+import { useEcharts } from "@/hooks/useEcharts";
+
+const echartsRef = ref<HTMLElement>();
+const initChart = (data: any) => {
+	const myChart: echarts.ECharts = echarts.init(echartsRef.value as HTMLElement);
+	const option: echarts.EChartsOption = {
 		title: {
 			text: "Gitee / GitHub",
 			subtext: "访问占比",
@@ -50,6 +52,7 @@ const initChart = (data: any): ECharts => {
 						return name + "      " + dataCopy;
 					}
 				}
+				return "";
 			}
 		},
 		series: [
@@ -115,8 +118,7 @@ const initChart = (data: any): ECharts => {
 			}
 		]
 	};
-	echarts.setOption(options);
-	return echarts;
+	useEcharts(myChart, option);
 };
 defineExpose({
 	initChart

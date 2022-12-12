@@ -5,10 +5,13 @@ import "vue-router";
 
 declare module "vue-router" {
 	interface RouteMeta {
+		icon?: string;
 		title?: string;
-		requiresAuth?: boolean;
-		keepAlive?: boolean;
-		key?: string;
-		notransition?: boolean;
+		activeMenu?: string;
+		isLink?: string;
+		isHide?: boolean;
+		isFull?: boolean;
+		isAffix?: boolean;
+		isKeepAlive?: boolean;
 	}
 }

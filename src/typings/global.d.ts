@@ -2,11 +2,21 @@
 declare namespace Menu {
 	interface MenuOptions {
 		path: string;
-		title: string;
-		icon?: string;
-		isLink?: string;
-		close?: boolean;
+		name: string;
+		component?: string | (() => Promise<any>);
+		redirect?: string;
+		meta: MetaProps;
 		children?: MenuOptions[];
+	}
+	interface MetaProps {
+		icon: string;
+		title: string;
+		activeMenu?: string;
+		isLink?: string;
+		isHide: boolean;
+		isFull: boolean;
+		isAffix: boolean;
+		isKeepAlive: boolean;
 	}
 }
 
