@@ -3,7 +3,7 @@ import { PORT1 } from "@/api/config/servicePort";
 import http from "@/api";
 //import qs from "qs";
 
-//import Menu from "@/assets/json/menu";
+//import Menu from "@/assets/json/menu.json";
 
 /**
  * @name 登录模块

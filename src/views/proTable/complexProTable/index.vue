@@ -19,10 +19,17 @@
 					批量删除用户
 				</el-button>
 			</template>
+			<!-- Expand -->
+			<template #expand="scope">
+				{{ scope.row }}
+			</template>
 			<!-- 表格操作 -->
 			<template #operation="scope">
 				<el-button type="primary" link :icon="Refresh" @click="resetPass(scope.row)">重置密码</el-button>
 				<el-button type="primary" link :icon="Delete" @click="deleteAccount(scope.row)">删除</el-button>
+			</template>
+			<template #append>
+				<span style="color: var(--el-color-primary)">我是插入在表格最后的内容。若表格有合计行，该内容会位于合计行之上。</span>
 			</template>
 		</ProTable>
 		<UserDrawer ref="drawerRef" />
@@ -48,11 +55,12 @@ const proTable = ref();
 const columns: ColumnProps[] = [
 	{ type: "selection", fixed: "left", width: 80 },
 	{ type: "index", label: "#", width: 80 },
+	{ type: "expand", label: "Expand", width: 100 },
 	{
 		prop: "base",
 		label: "基本信息",
 		_children: [
-			{ prop: "username", label: "用户姓名" },
+			{ prop: "username", label: "用户姓名", width: 110 },
 			{ prop: "user.detail.age", label: "年龄", width: 100 },
 			{
 				prop: "gender",

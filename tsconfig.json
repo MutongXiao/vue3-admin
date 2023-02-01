@@ -33,7 +33,8 @@
 		"src/**/*.vue",
 		"vite.config.*",
 		"vitest.config.*",
-		"cypress.config.*"
+		"cypress.config.*",
+		"src/assets/json/menu.json"
 	],
 	"exclude": ["node_modules", "dist", "**/*.js"]
 }

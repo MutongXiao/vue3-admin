@@ -331,7 +331,7 @@ export function formatValue(callValue: any) {
  * @return any
  * */
 export function handleRowAccordingToProp(row: { [key: string]: any }, prop: string) {
-	if (!prop.includes(".")) return row[prop];
+	if (!prop.includes(".")) return row[prop] ?? "--";
 	prop.split(".").forEach(item => {
 		row = row[item] ?? "--";
 	});
@@ -364,7 +364,7 @@ export function filterEnum(
 ): string {
 	const value = searchProps?.value ?? "value";
 	const label = searchProps?.label ?? "label";
-	let filterData: any = {};
+	let filterData: { [key: string]: any } = {};
 	if (Array.isArray(enumData)) filterData = enumData.find((item: any) => item[value] === callValue);
 	if (type == "tag") return filterData?.tagType ? filterData.tagType : "";
 	return filterData ? filterData[label] : "--";
@@ -427,16 +427,16 @@ export function getCurrentBreadcrumb(path: string, menuList: Menu.MenuOptions[])
 }
 
 /**
- * @description 双重递归找出所有面包屑存储到 pinia/vuex 中
+ * @description 递归找出所有面包屑存储到 pinia/vuex 中
  * @param {Array} menuList 所有菜单列表
- * @returns Object
+ * @param {Object} result 输出的结果
+ * @param {String} path 当前递归的路径
+ * @returns object
  */
-export function getAllBreadcrumbList(menuList: Menu.MenuOptions[]) {
-	let handleBreadcrumbList: { [key: string]: Menu.MenuOptions[] | undefined } = {};
-	const loop = (menuItem: Menu.MenuOptions) => {
-		if (menuItem?.children?.length) menuItem.children.forEach(item => loop(item));
-		handleBreadcrumbList[menuItem.path] = getCurrentBreadcrumb(menuItem.path, menuList);
-	};
-	menuList.forEach(item => loop(item));
-	return handleBreadcrumbList;
-}
+export const getAllBreadcrumbList = (menuList: Menu.MenuOptions[], result: { [key: string]: any } = {}, path = []) => {
+	for (const item of menuList) {
+		result[item.path] = [...path, item];
+		if (item.children) getAllBreadcrumbList(item.children, result, result[item.path]);
+	}
+	return result;
+};

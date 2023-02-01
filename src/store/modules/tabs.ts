@@ -20,6 +20,13 @@ export const TabsStore = defineStore({
 				this.tabsMenuList.push(tabItem);
 			}
 		},
+		// set tab title
+		async setTabsTitle(title: string) {
+			const currentPath = location.hash.substring(1);
+			this.tabsMenuList.forEach(tab => {
+				if (tab.path === currentPath) tab.title = title;
+			});
+		},
 		// Remove Tabs
 		async removeTabs(tabPath: string, isCurrent: boolean = true) {
 			const tabsMenuList = this.tabsMenuList;
