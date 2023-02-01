@@ -149,6 +149,7 @@ const draw = (event: Event) => {
 	const { client, mobileStatus } = canvasParams;
 	// 获取当前坐标点位
 	const { pageX, pageY } = mobileStatus ? (event as TouchEvent).changedTouches[0] : (event as MouseEvent);
+
 	const { x, y } = canvasRef.value.getBoundingClientRect();
 
 	// 修改最后一次绘制的坐标点
