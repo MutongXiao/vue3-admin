@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 // vue3 尚不支持从外部引入类型定义
 // import type { IProps } from "./type";
 
@@ -89,10 +89,6 @@ const canvasParams = {
 		endX: 0, // 坐标
 		endY: 0
 	},
-	boundingClientRect: {
-		x: 0,
-		y: 0
-	},
 	// 判断是否为移动端
 	mobileStatus: /Mobile|Android|iPhone/i.test(navigator.userAgent)
 };
@@ -102,13 +98,10 @@ const initCanvasConfig = () => {
 	const canvas = canvasRef.value;
 	if (!canvas) return;
 
-	const { x, y } = canvas.getBoundingClientRect();
-	canvasParams.boundingClientRect.x = x;
-	canvasParams.boundingClientRect.y = y;
-
 	// 设置宽高
 	canvas.width = props.width;
 	canvas.height = props.height;
+
 	// 创建上下文
 	if (!ctxRef) {
 		ctxRef = canvas.getContext("2d")!;
@@ -127,8 +120,10 @@ const initCanvasConfig = () => {
 
 // 鼠标按下
 const pointerDown = (event: Event) => {
-	if (!ctxRef) return;
-	const { client, mobileStatus, boundingClientRect } = canvasParams;
+	if (!canvasRef.value || !ctxRef) return;
+
+	const { client, mobileStatus } = canvasParams;
+	const { x, y } = canvasRef.value.getBoundingClientRect();
 	// 获取偏移量及坐标
 	const { pageX, pageY } = mobileStatus ? (event as TouchEvent).changedTouches[0] : (event as MouseEvent);
 	// 修改鼠标落点坐标
@@ -143,14 +138,16 @@ const pointerDown = (event: Event) => {
 	ctxRef.lineCap = props.lineCap;
 	ctxRef.lineJoin = props.lineJoin;
 	// 设置画线起始点位
-	ctxRef.moveTo(client.endX - boundingClientRect.x, client.endY - boundingClientRect.y);
+	ctxRef.moveTo(client.endX - x, client.endY - y);
 	// 监听 鼠标移动或手势移动
-	window.addEventListener(mobileStatus ? "touchmove" : "mousemove", draw);
+	canvasRef.value!.addEventListener(mobileStatus ? "touchmove" : "mousemove", draw);
 };
 // 绘制
 const draw = (event: Event) => {
-	if (!ctxRef) return;
-	const { client, mobileStatus, boundingClientRect } = canvasParams;
+	if (!canvasRef.value || !ctxRef) return;
+
+	const { client, mobileStatus } = canvasParams;
+	const { x, y } = canvasRef.value.getBoundingClientRect();
 	// 获取当前坐标点位
 	const { pageX, pageY } = mobileStatus ? (event as TouchEvent).changedTouches[0] : (event as MouseEvent);
 	// 修改最后一次绘制的坐标点
@@ -158,7 +155,7 @@ const draw = (event: Event) => {
 	client.endY = pageY;
 
 	// 根据坐标点位移动添加线条
-	ctxRef.lineTo(pageX - boundingClientRect.x, pageY - boundingClientRect.y);
+	ctxRef.lineTo(pageX - x, pageY - y);
 
 	// 绘制
 	ctxRef.stroke();
@@ -169,7 +166,7 @@ const closeDraw = () => {
 	// 结束绘制
 	ctxRef.closePath();
 	// 移除鼠标移动或手势移动监听器
-	window.removeEventListener("mousemove", draw);
+	canvasRef.value.removeEventListener("mousemove", draw);
 	props.onDrawEnd && props.onDrawEnd(canvasRef.value);
 };
 
@@ -177,15 +174,9 @@ onMounted(() => {
 	const { mobileStatus } = canvasParams;
 	initCanvasConfig();
 	// 创建鼠标/手势按下监听器
-	window.addEventListener(mobileStatus ? "touchstart" : "mousedown", pointerDown);
+	canvasRef.value!.addEventListener(mobileStatus ? "touchstart" : "mousedown", pointerDown);
 	// 创建鼠标/手势 弹起/离开 监听器
-	window.addEventListener(mobileStatus ? "touchend" : "mouseup", closeDraw);
-});
-
-onUnmounted(() => {
-	const { mobileStatus } = canvasParams;
-	window.removeEventListener(mobileStatus ? "touchstart" : "mousedown", pointerDown);
-	window.removeEventListener(mobileStatus ? "touchend" : "mouseup", closeDraw);
+	canvasRef.value!.addEventListener(mobileStatus ? "touchend" : "mouseup", closeDraw);
 });
 
 watch(props, () => {
