@@ -1,7 +1,7 @@
 {
 	"name": "vue3-admin",
 	"private": true,
-	"description": "Geeker-Admin后台管理系统",
+	"description": "Vue3 Admin后台管理系统模板",
 	"author": "Molin <mutongxiao@hot.com>",
 	"version": "0.1.0",
 	"scripts": {
@@ -38,6 +38,7 @@
 		"mathjs": "^11.4.0",
 		"mitt": "^3.0.0",
 		"nprogress": "^0.2.0",
+		"oh-vue-icons": "^1.0.0-rc3",
 		"pinia": "^2.0.17",
 		"pinia-plugin-persistedstate": "^2.1.0",
 		"print-js": "^1.6.0",

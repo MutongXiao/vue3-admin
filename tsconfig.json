@@ -2,6 +2,7 @@
 	"extends": "@vue/tsconfig/tsconfig.web.json",
 	"compilerOptions": {
 		"target": "esnext",
+		"isolatedModules": true,
 		"useDefineForClassFields": true,
 		// 移除此配置项，
 		// 否则在 src/compoents/SvgIcon/index.vue 会表红 <模块的默认导出具有或正在使用专用名称 “xxxx” ?

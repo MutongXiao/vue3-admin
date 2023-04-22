@@ -4,14 +4,13 @@
 	.el-aside {
 		width: auto;
 		overflow: inherit;
-		background-color: #191a20;
-		border-right: 1px solid #191a20;
 		.menu {
 			display: flex;
 			flex-direction: column;
 			height: 100%;
 			transition: all 0.3s ease;
 			.el-scrollbar {
+				position: relative;
 				height: calc(100% - 55px);
 				.el-menu {
 					overflow-x: hidden;
@@ -20,16 +19,16 @@
 			}
 			.logo {
 				box-sizing: border-box;
-				height: 55px;
-				border-bottom: 1px solid #282a35;
+				height: 70px;
+				border-bottom: 1px solid #777a84;
 				span {
 					font-size: 21.5px;
 					font-weight: bold;
-					color: #dadada;
+					color: #ffffff;
 					white-space: nowrap;
 				}
 				img {
-					width: 28px;
+					width: 29px;
 					object-fit: contain;
 					margin-right: 6px;
 				}

@@ -1,15 +1,16 @@
 <template>
 	<div class="editorWrap">
 		<div class="cpArea">
-			<slot :config="config"></slot>
+			<slot :config="configJson"></slot>
 		</div>
 		<div class="editorArea">
 			<ElAlert v-if="errorMsg" :title="errorMsg" type="error" show-icon effect="dark" />
+			<el-alert title="在下方设置画布的相关配置 ⬇" type="info" :closable="false" />
 			<ElInput
-				v-model="code"
+				v-model="configInputText"
 				type="textarea"
 				autosize
-				placeholder="在此处输入文字"
+				placeholder="在此处输入配置文本"
 				:style="{ marginTop: 6, background: '#1e1e1e', color: '#ffffff' }"
 			/>
 			<ElButton type="primary" @click="handleRun" :style="{ marginTop: 12 }">运行</ElButton>
@@ -24,7 +25,7 @@ interface IProps {
 	direction?: "vertical" | "horizontal";
 	minSize?: number;
 	defaultSize?: number;
-	initValue?: any;
+	initEditorConfig?: Record<string, any>;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -33,30 +34,32 @@ const props = withDefaults(defineProps<IProps>(), {
 	defaultSize: 460
 });
 const errorMsg = ref("");
-const code = ref("");
-const config = ref<Record<string, any>>({});
-
+const configInputText = ref("");
+const configJson = ref<Record<string, any>>({});
+// 转化配置文本为 JSON
 const handleRun = () => {
 	try {
 		errorMsg.value = "";
-		config.value = JSON.parse(code.value);
+		configJson.value = JSON.parse(configInputText.value);
 	} catch (err: any) {
 		errorMsg.value = "JSON格式错误";
-		config.value = {};
+		configJson.value = {};
 	}
 };
+
 watch(
-	() => props.initValue,
+	() => props.initEditorConfig,
 	value => {
 		try {
-			code.value = JSON.stringify(value, null, 4);
-			config.value = value;
+			configInputText.value = JSON.stringify(value, null, 4);
+			configJson.value = value!;
 		} catch (err: any) {
-			code.value = "";
+			configInputText.value = "";
 			errorMsg.value = "格式错误";
 		}
 	},
 	{
+		// 在侦听器创建时立即触发回调 (第一次调用时旧值是 undefined, 新值是 props.initEditorConfig), 以便将 props.initEditorConfig 同步到输入框.
 		immediate: true
 	}
 );

@@ -36,6 +36,38 @@ import directives from "@/directives/index";
 import useVxeTable from "./views/awesomeModules/webWorker/demo/useTable";
 // errorHandler
 import errorHandler from "@/utils/errorHandler";
+//引入oh-vue-icons,参考 https://oh-vue-icons.js.org/zh/docs
+import { OhVueIcon, addIcons } from "oh-vue-icons";
+// 这里引入你需要的图标
+import {
+	FcFolder,
+	ViFileTypeWord,
+	ViFileTypeExcel,
+	ViFileTypePowerpoint,
+	ViFileTypePdf,
+	ViFileTypeImage,
+	ViFileTypeVideo,
+	ViFileTypeAudio,
+	ViFileTypePhotoshop2,
+	ViFileTypeText,
+	ViDefaultFile,
+	ViFileTypeJson
+} from "oh-vue-icons/icons";
+
+addIcons(
+	FcFolder,
+	ViFileTypeWord,
+	ViFileTypeExcel,
+	ViFileTypePowerpoint,
+	ViFileTypePdf,
+	ViFileTypeImage,
+	ViFileTypeVideo,
+	ViFileTypeAudio,
+	ViFileTypePhotoshop2,
+	ViFileTypeText,
+	ViDefaultFile,
+	ViFileTypeJson
+);
 
 const app = createApp(App);
 
@@ -45,5 +77,7 @@ app.config.errorHandler = errorHandler;
 Object.keys(Icons).forEach(key => {
 	app.component(key, Icons[key as keyof typeof Icons]);
 });
+// 注册 VIcon 组件
+app.component("VIcon", OhVueIcon);
 
 app.use(router).use(I18n).use(pinia).use(ElementPlus).use(directives).use(useVxeTable).mount("#app");

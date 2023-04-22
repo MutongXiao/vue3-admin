@@ -1,7 +1,7 @@
 <!-- 纵向布局 -->
 <template>
 	<el-container class="layout">
-		<el-aside>
+		<el-aside :style="{ backgroundColor: themColor, borderRight: `1px solid ${themColor}` }">
 			<div class="menu" :style="{ width: isCollapse ? '65px' : '210px' }">
 				<div class="logo flx-center">
 					<img src="@/assets/images/logo.svg" alt="logo" />
@@ -14,9 +14,9 @@
 						:collapse="isCollapse"
 						:collapse-transition="false"
 						:unique-opened="true"
-						background-color="#191a20"
-						text-color="#bdbdc0"
-						active-text-color="#ffffff"
+						:background-color="themColor"
+						text-color="#ffffff"
+						:active-text-color="themColor"
 					>
 						<SubMenu :menuList="menuList" />
 					</el-menu>
@@ -49,6 +49,7 @@ const globalStore = GlobalStore();
 const activeMenu = computed(() => (route.meta.activeMenu ? route.meta.activeMenu : route.path));
 const menuList = computed(() => authStore.showMenuList);
 const isCollapse = computed(() => globalStore.themeConfig.isCollapse);
+const themColor = computed(() => globalStore.themeConfig.primary);
 </script>
 
 <style scoped lang="scss">
@@ -61,7 +62,7 @@ const isCollapse = computed(() => globalStore.themeConfig.isCollapse);
 	.el-menu--popup {
 		.el-menu-item {
 			&.is-active {
-				background: #060708;
+				background: #ffffff;
 				&::before {
 					position: absolute;
 					top: 0;

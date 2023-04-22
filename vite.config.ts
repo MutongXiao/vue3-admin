@@ -157,6 +157,9 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 				}
 			}
 		},
+		optimizeDeps: {
+			exclude: ["oh-vue-icons/icons"]
+		},
 		// build configure 打包输出配置
 		build: {
 			outDir: "dist",

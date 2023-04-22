@@ -129,7 +129,8 @@ const themeConfig = computed(() => globalStore.themeConfig);
 // 预定义主题颜色
 const colorList = [
 	DEFAULT_PRIMARY,
-	"#DAA96E",
+	"#5161ce",
+	// "#DAA96E",
 	"#0C819F",
 	"#409EFF",
 	"#27ae60",
