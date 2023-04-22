@@ -20,9 +20,7 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-// import dayjs from "dayjs";
 
-// const now = new Date();
 const fileIcons: Record<string, string> = {
 	directory: "fc-folder",
 	doc: "vi-file-type-word",
@@ -192,22 +190,9 @@ const rowHeader = {
 const deleteRow = (index: number) => {
 	tableData.value.splice(index, 1);
 };
-
-// const onAddItem = () => {
-// 	now.setDate(now.getDate() + 1);
-// 	tableData.value.push({
-// 		date: dayjs(now).format("YYYY-MM-DD"),
-// 		creator: "Tom",
-// 		fileName: "California.png",
-// 		size: "222kb",
-// 		isDirectory: false,
-// 		type: "png"
-// 	});
-// };
 </script>
 
 <style scoped lang="scss">
-@import "./index.scss";
 .row-item {
 	height: "50px";
 	cursor: "pointer";
