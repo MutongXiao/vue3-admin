@@ -50,6 +50,13 @@ const activeMenu = computed(() => (route.meta.activeMenu ? route.meta.activeMenu
 const menuList = computed(() => authStore.showMenuList);
 const isCollapse = computed(() => globalStore.themeConfig.isCollapse);
 const themColor = computed(() => globalStore.themeConfig.primary);
+
+// const handleMenuSelect = (item: Menu.MenuOptions) => {
+// 	const activeItem = document.querySelector(`.el-menu-item.is-active"]`);
+// 	console.log('item', item.);
+
+// 	console.log("activeItem", activeItem);
+// };
 </script>
 
 <style scoped lang="scss">

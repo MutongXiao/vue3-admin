@@ -1,4 +1,4 @@
-import { LOGIN_URL } from "@/config/config";
+import { LOGIN_URL, ROUTER_WHITE_LIST } from "@/config/config";
 import NProgress from "@/config/nprogress";
 import { initDynamicRouter } from "@/router/modules/dynamicRouter";
 import { errorRouter, staticRouter } from "@/router/modules/staticRouter";
@@ -42,24 +42,33 @@ router.beforeEach(async (to, from, next) => {
 	const title = import.meta.env.VITE_GLOB_APP_TITLE;
 	document.title = to.meta.title ? `${to.meta.title} - ${title}` : title;
 
-	// 3.如果是访问登陆页，没有 token 直接放行，有 token 就在当前页
-	if (to.path === LOGIN_URL) {
-		if (!globalStore.token) return next();
-		else return next(from.fullPath);
+	// 3.判断是访问登陆页，有 Token 就在当前页面，没有 Token 重置路由到登陆页
+	if (to.path.toLocaleLowerCase() === LOGIN_URL) {
+		if (globalStore.token) {
+			return next(from.fullPath);
+		} else {
+			resetRouter();
+			return next();
+		}
 	}
 
-	// 4.判断是否有 Token，没有重定向到 login
-	if (!globalStore.token) return next(LOGIN_URL);
+	// 4.判断访问页面是否在(静态路由的)路由白名单地址中，如果存在直接放行
+	if (ROUTER_WHITE_LIST.includes(to.path)) return next();
 
-	// 5.如果没有菜单列表，就重新请求菜单列表并添加动态路由
+	// 5.判断是否有 Token，没有重定向到 login 页面
+	if (!globalStore.token) return next({ path: LOGIN_URL, replace: true });
+
+	// 6.如果没有菜单列表，就重新请求获取菜单列表并加载动态路由
 	const authStore = AuthStore();
-	authStore.setRouteName(to.name as string);
 	if (!authStore.authMenuList.length) {
 		await initDynamicRouter();
 		return next({ ...to, replace: true });
 	}
 
-	// 6.正常访问页面
+	// 7.存储 routerName 做按钮权限筛选
+	authStore.setRouteName(to.name as string);
+
+	// 8.正常访问页面
 	next();
 });
 
@@ -75,18 +84,18 @@ export const resetRouter = () => {
 };
 
 /**
- * @description 路由跳转结束
- * */
-router.afterEach(() => {
-	NProgress.done();
-});
-
-/**
  * @description 路由跳转错误
  * */
 router.onError(error => {
 	NProgress.done();
 	console.warn("路由错误", error.message);
+});
+
+/**
+ * @description 路由跳转结束
+ * */
+router.afterEach(() => {
+	NProgress.done();
 });
 
 export default router;

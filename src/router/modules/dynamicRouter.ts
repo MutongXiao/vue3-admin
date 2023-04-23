@@ -4,7 +4,6 @@ import { LOGIN_URL } from "@/config/config";
 import { ElNotification } from "element-plus";
 import { GlobalStore } from "@/store";
 import { AuthStore } from "@/store/modules/auth";
-import { notFoundRouter } from "@/router/modules/staticRouter";
 
 // 引入 views 文件夹下所有 vue 文件
 const modules = import.meta.glob("@/views/**/*.vue");
@@ -40,14 +39,13 @@ export const initDynamicRouter = async () => {
 				item.component = modules["/src/views" + item.component + ".vue"];
 			}
 			if (item.meta.isFull) {
+				// 全屏显示的路由，不在布局页面中，添加一个新路由节点
 				router.addRoute(item);
 			} else {
+				// 在 layout 路由节点添加一个新的子路由
 				router.addRoute("layout", item);
 			}
 		});
-
-		// 4.最后添加 notFoundRouter
-		router.addRoute(notFoundRouter);
 	} catch (error) {
 		// 💢 当按钮 || 菜单请求出错时，重定向到登陆页
 		globalStore.setToken("");

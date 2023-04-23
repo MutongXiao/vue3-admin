@@ -69,13 +69,14 @@ const closeCurrentTab = () => {
 // Close Other
 const closeOtherTab = () => {
 	tabStore.closeMultipleTab(route.fullPath);
-	keepAliveStore.clearMultipleKeepAlive([route.name] as string[]);
+	keepAliveStore.setKeepAliveName([route.name] as string[]);
 };
 
 // Close All
 const closeAllTab = () => {
 	tabStore.closeMultipleTab();
-	keepAliveStore.clearMultipleKeepAlive();
+	// 设置 KeepAliveName 为 []
+	keepAliveStore.setKeepAliveName([]);
 	router.push(HOME_URL);
 };
 </script>

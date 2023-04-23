@@ -39,10 +39,16 @@ const tabsMenuList = computed(() => tabStore.tabsMenuList);
 const themeConfig = computed(() => globalStore.themeConfig);
 
 // 标签拖拽排序
-const makeTabsDargAble = () => {
+const makeTabsDargable = () => {
 	Sortable.create(document.querySelector(".el-tabs__nav") as HTMLElement, {
 		draggable: ".el-tabs__item",
-		animation: 300
+		animation: 300,
+		onEnd({ newIndex, oldIndex }) {
+			const tabsList = [...tabStore.tabsMenuList];
+			const currRow = tabsList.splice(oldIndex as number, 1)[0];
+			tabsList.splice(newIndex as number, 0, currRow);
+			tabStore.setTabs(tabsList);
+		}
 	});
 };
 
@@ -60,6 +66,19 @@ const initTabs = () => {
 			tabStore.addTabs(tabsParams);
 		}
 	});
+};
+
+// Tab Click
+const tabClick = (tabItem: TabsPaneContext) => {
+	const fullPath = tabItem.props.name as string;
+	router.push(fullPath);
+};
+
+// Remove Tab
+const tabRemove = (fullPath: TabPaneName) => {
+	const name = tabStore.tabsMenuList.filter(item => item.path == fullPath)[0]?.name;
+	keepAliveStore.removeKeepLiveName(name);
+	tabStore.removeTabs(fullPath as string, fullPath == route.fullPath);
 };
 
 // 监听路由的变化（防止浏览器后退/前进不变化 tabsMenuValue）
@@ -84,22 +103,9 @@ watch(
 );
 
 onMounted(() => {
-	makeTabsDargAble();
+	makeTabsDargable();
 	initTabs();
 });
-
-// Tab Click
-const tabClick = (tabItem: TabsPaneContext) => {
-	const fullPath = tabItem.props.name as string;
-	router.push(fullPath);
-};
-
-// Remove Tab
-const tabRemove = (fullPath: TabPaneName) => {
-	const name = tabStore.tabsMenuList.filter(item => item.path == fullPath)[0]?.name;
-	keepAliveStore.removeKeepLiveName(name);
-	tabStore.removeTabs(fullPath as string, fullPath == route.fullPath);
-};
 </script>
 
 <style scoped lang="scss">
