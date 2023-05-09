@@ -48,10 +48,14 @@ import {
 	ViFileTypeImage,
 	ViFileTypeVideo,
 	ViFileTypeAudio,
-	ViFileTypePhotoshop2,
 	ViFileTypeText,
 	ViDefaultFile,
-	ViFileTypeJson
+	ViFileTypeSvg,
+	ViFileTypeJson,
+	ViFileTypeHtml,
+	ViFileTypeCss,
+	ViFileTypeLightJs,
+	MdGifSharp
 } from "oh-vue-icons/icons";
 
 addIcons(
@@ -63,10 +67,14 @@ addIcons(
 	ViFileTypeImage,
 	ViFileTypeVideo,
 	ViFileTypeAudio,
-	ViFileTypePhotoshop2,
 	ViFileTypeText,
 	ViDefaultFile,
-	ViFileTypeJson
+	ViFileTypeSvg,
+	ViFileTypeJson,
+	ViFileTypeHtml,
+	ViFileTypeCss,
+	ViFileTypeLightJs,
+	MdGifSharp
 );
 
 const app = createApp(App);

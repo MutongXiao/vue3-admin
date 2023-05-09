@@ -1,7 +1,7 @@
 <!-- 纵向布局 -->
 <template>
 	<el-container class="layout">
-		<el-aside :style="{ backgroundColor: themColor, borderRight: `1px solid ${themColor}` }">
+		<el-aside :style="{ backgroundColor: themColor }">
 			<div class="menu" :style="{ width: isCollapse ? '65px' : '210px' }">
 				<div class="logo flx-center">
 					<img src="@/assets/images/logo.svg" alt="logo" />
@@ -9,6 +9,7 @@
 				</div>
 				<el-scrollbar>
 					<el-menu
+						id="verticalMenu"
 						:default-active="activeMenu"
 						:router="false"
 						:collapse="isCollapse"
@@ -50,13 +51,6 @@ const activeMenu = computed(() => (route.meta.activeMenu ? route.meta.activeMenu
 const menuList = computed(() => authStore.showMenuList);
 const isCollapse = computed(() => globalStore.themeConfig.isCollapse);
 const themColor = computed(() => globalStore.themeConfig.primary);
-
-// const handleMenuSelect = (item: Menu.MenuOptions) => {
-// 	const activeItem = document.querySelector(`.el-menu-item.is-active"]`);
-// 	console.log('item', item.);
-
-// 	console.log("activeItem", activeItem);
-// };
 </script>
 
 <style scoped lang="scss">
@@ -66,19 +60,53 @@ const themColor = computed(() => globalStore.themeConfig.primary);
 <style lang="scss">
 .vertical {
 	.el-menu,
-	.el-menu--popup {
+	.el-menu--inline {
 		.el-menu-item {
 			&.is-active {
 				background: #ffffff;
-				&::before {
+				border-top-left-radius: 25px;
+				border-bottom-left-radius: 25px;
+				&::before,
+				&::after {
 					position: absolute;
-					top: 0;
-					bottom: 0;
-					left: 0;
-					width: 4px;
+					right: 0;
+					z-index: 99;
+					width: 25px;
+					height: 20px;
 					content: "";
-					background: var(--el-color-primary);
 				}
+				&::before {
+					top: -19px;
+
+					// 水平半轴 26.5px 垂直半轴 25px，中心位置 0 0（左上角）
+					background: radial-gradient(25px 19px at 0 0, transparent, transparent 100%, #ffffff);
+				}
+				&::after {
+					bottom: -19px;
+					background: radial-gradient(25px 19px at 0 20px, transparent, transparent 100%, #ffffff);
+				}
+			}
+		}
+	}
+	.el-menu--popup {
+		.el-menu-item {
+			&.is-active {
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+				&::before,
+				&::after {
+					display: none;
+				}
+
+				// &::before {
+				// 	position: absolute;
+				// 	top: 0;
+				// 	bottom: 0;
+				// 	left: 0;
+				// 	width: 4px;
+				// 	content: "";
+				// 	background: var(--el-color-primary);
+				// }
 			}
 		}
 	}
