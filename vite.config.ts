@@ -154,6 +154,11 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 					changeOrigin: true,
 					// 路径重写
 					rewrite: path => path.replace(/^\/api/, "")
+				},
+				"^/download": {
+					target: "https://zj52bg.hk.aircodecdn.com",
+					changeOrigin: true,
+					rewrite: path => path.replace(/^\/download/, "")
 				}
 			}
 		},

@@ -127,14 +127,11 @@ const getRowDataData = async () => {
 	allFiles.value = [...result[0].data?.data, ...result[1].data?.data];
 	tableLoading.value = false;
 };
-onMounted(() => {
-	getRowDataData();
-});
 // 上传文件
-let uploadSeletedFolderId = "/";
+let seletedUploadFolderId = "/";
 const uploadFile = (folderId: string) => {
 	const uploadElement = uploadRef.value;
-	uploadSeletedFolderId = folderId;
+	seletedUploadFolderId = folderId;
 	uploadElement?.click();
 };
 const onUploadChange = () => {
@@ -151,7 +148,7 @@ const onUploadChange = () => {
 		const formData = new FormData();
 		// Then append the file to it
 		formData.append("uploadFile", file);
-		formData.append("inFolderId", uploadSeletedFolderId);
+		formData.append("inFolderId", seletedUploadFolderId);
 		formData.append("fileName", file.name);
 		formData.append("owner", username.value);
 		formData.append("action", "upload");
@@ -213,7 +210,11 @@ const downloadFile = (file: RowData) => {
 	// 		document.body.removeChild(tempLink);
 	// 	});
 	// });
-	fetch(file.url!)
+
+	const fileSrc = file.url ?? "";
+	// 原来的url会跨域，走代理url
+	const prosyUrl = "/download/" + fileSrc.replace("https://zj52bg.hk.aircodecdn.com/", "");
+	fetch(prosyUrl)
 		.then(response => {
 			return response.blob();
 		})
@@ -504,6 +505,10 @@ const renameFile = (rowData: RowData) => {
 const setcurrentFolderId = (folderId: string) => {
 	currentFolderId.value = folderId;
 };
+
+onMounted(() => {
+	getRowDataData();
+});
 </script>
 
 <style scoped lang="scss">
